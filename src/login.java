@@ -8,14 +8,26 @@
  *
  * @author Mahardicka
  */
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 public class login extends javax.swing.JFrame {
-
+    Connection con;
+    Statement stat;
+    ResultSet rs;
+    String sql;
+    
     /**
      * Creates new form login
      */
     public login() {
         initComponents();
         setResizable(false);
+        // db
+        koneksi DB = new koneksi();
+        DB.config();
+        con = DB.con;
+        stat = DB.stm;
     }
 
     /**
@@ -69,7 +81,7 @@ public class login extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 168, Short.MAX_VALUE)))
                 .addGap(50, 50, 50))
         );
         layout.setVerticalGroup(
@@ -85,24 +97,34 @@ public class login extends javax.swing.JFrame {
                 .addComponent(txtpasswd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addComponent(btnlogin)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtidActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtidActionPerformed
 
     private void btnloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnloginActionPerformed
         // TODO add your handling code here:
         String id,password;
         id = txtid.getText();
         password = txtpasswd.getText();
-        
-        System.out.println("id : "+id+", password : "+password);
-    }//GEN-LAST:event_btnloginActionPerformed
+        sql = "select * from karyawan where id = "+id;
+        try {
+            rs = stat.executeQuery(sql);
+            if(rs.next()){
+                if(id.equals(rs.getString("id"))){
+                    System.out.println(rs.getString("email"));
+                }
 
-    private void txtidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtidActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtidActionPerformed
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }//GEN-LAST:event_btnloginActionPerformed
 
     /**
      * @param args the command line arguments
