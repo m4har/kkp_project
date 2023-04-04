@@ -5,6 +5,9 @@
  */
 package krb;
 
+import javax.swing.JFrame;
+import pages.login;
+
 /**
  *
  * @author Mahardicka
@@ -16,6 +19,10 @@ public class Krb {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        JFrame loginPage = new login();
+        System.out.println("Render login page");
+        loginPage.setVisible(true);
+        
     }
     
 }
