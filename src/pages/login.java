@@ -151,7 +151,7 @@ public class login extends javax.swing.JFrame {
         String id,password;
         id = txtid.getText();
         password = txtpasswd.getText();
-        sql = "select * from karyawan where id = "+id;
+        sql = "SELECT * FROM karyawan where id = "+id;
         try {
             rs = stat.executeQuery(sql);
             if(rs.next()){

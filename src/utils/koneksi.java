@@ -13,7 +13,7 @@ public class koneksi {
         try {
             if(con == null){
             Class.forName("com.mysql.jdbc.Driver");
-            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/warehouse", "root", "");
+            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/krb", "root", "");
             stm = con.createStatement();
             }
         } catch (Exception e) {
