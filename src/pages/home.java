@@ -31,6 +31,7 @@ public class home extends javax.swing.JFrame {
      */
     public home() {
         initComponents();
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/image/logo2.png")));
     }
     void setupDB(){
          // db
@@ -106,8 +107,6 @@ public class home extends javax.swing.JFrame {
 
         idKaryawan.setText("id karyawan");
         getContentPane().add(idKaryawan, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 30, -1, -1));
-
-        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\ACS\\Documents\\kkp_project\\src\\assets\\image\\logo2.png")); // NOI18N
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
 
         jMenu1.setText("Form");
