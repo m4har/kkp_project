@@ -14,29 +14,30 @@ import utils.koneksi;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import javax.swing.ImageIcon;
-import java.awt.Image;
+import javax.swing.JOptionPane;
 
 public class login extends javax.swing.JFrame {
     Connection con;
     Statement stat;
     ResultSet rs;
     String sql;
-    
+    home homePage = new home();
     /**
      * Creates new form login
      */
     public login() {
         initComponents();
         setResizable(false);
-        // db
+        // set logo
+        krblogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/image/logo.png")));
+        // krblogo.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource("/res/image.png")).getImage().getScaledInstance(200, 50, Image.SCALE_DEFAULT)));
+    }
+   void setupDB(){
+         // db
         koneksi DB = new koneksi();
         DB.config();
         con = DB.con;
         stat = DB.stm;
-        // set logo
-        krblogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/image/logo.png")));
-        // krblogo.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource("/res/image.png")).getImage().getScaledInstance(200, 50, Image.SCALE_DEFAULT)));
     }
 
     /**
@@ -151,17 +152,23 @@ public class login extends javax.swing.JFrame {
         String id,password;
         id = txtid.getText();
         password = txtpasswd.getText();
-        sql = "SELECT * FROM karyawan where id = "+id;
+        setupDB();
+        sql = "SELECT id FROM karyawan where id='"+id+"' and password='"+password+"'";
         try {
             rs = stat.executeQuery(sql);
             if(rs.next()){
                 if(id.equals(rs.getString("id"))){
-                    System.out.println(rs.getString("email"));
+                    this.setVisible(false);
+                    homePage.setVisible(true);
+                    homePage.onLoad(rs.getString("id"));
                 }
-
+            } else {
+                JOptionPane.showMessageDialog(null,"id atau password tidak sesuai.");
             }
+            con.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, "error "+e.getMessage());
         }
     }//GEN-LAST:event_btnloginActionPerformed
 

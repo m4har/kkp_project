@@ -5,17 +5,60 @@
  */
 package pages;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import utils.koneksi;
+
 /**
  *
  * @author Mahardicka
  */
 public class home extends javax.swing.JFrame {
-
+    Connection con;
+    Statement stat;
+    ResultSet rs;
+    String sql;
+    String idKar;
+    barang barangPage = new barang();
+    kasir kasirPage = new kasir();
+    karyawan karyawanPage = new karyawan();
+    vendor vendorPage = new vendor();
+//    member memberPage = new member();
     /**
      * Creates new form home
      */
     public home() {
         initComponents();
+    }
+    void setupDB(){
+         // db
+        koneksi DB = new koneksi();
+        DB.config();
+        con = DB.con;
+        stat = DB.stm;
+    }   
+    
+    public void onLoad(String id){
+       idKar = id;
+       sql = "SELECT nama,role,email FROM karyawan WHERE id='"+id+"'";
+       setupDB();
+        try {
+            rs = stat.executeQuery(sql);
+            if(rs.next()){          
+                namaKar.setText(rs.getString("nama"));
+                idKaryawan.setText(id);
+                emailKar.setText(rs.getString("email"));
+                roleKar.setText(rs.getString("role"));
+            } else {
+                JOptionPane.showMessageDialog(null,"error database get profile.");
+            }
+            con.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, "error "+e.getMessage());
+        }
     }
 
     /**
@@ -34,8 +77,13 @@ public class home extends javax.swing.JFrame {
         btvendor = new javax.swing.JButton();
         btlaporan = new javax.swing.JButton();
         btpegawai = new javax.swing.JButton();
+        namaKar = new javax.swing.JLabel();
+        emailKar = new javax.swing.JLabel();
+        roleKar = new javax.swing.JLabel();
+        idKaryawan = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btkasir.setText("KASIR");
         btkasir.addActionListener(new java.awt.event.ActionListener() {
@@ -43,6 +91,7 @@ public class home extends javax.swing.JFrame {
                 btkasirActionPerformed(evt);
             }
         });
+        getContentPane().add(btkasir, new org.netbeans.lib.awtextra.AbsoluteConstraints(164, 84, 94, 70));
 
         btbarang.setText("BARANG");
         btbarang.addActionListener(new java.awt.event.ActionListener() {
@@ -50,6 +99,7 @@ public class home extends javax.swing.JFrame {
                 btbarangActionPerformed(evt);
             }
         });
+        getContentPane().add(btbarang, new org.netbeans.lib.awtextra.AbsoluteConstraints(41, 84, 94, 70));
 
         btmember.setText("MEMBER");
         btmember.addActionListener(new java.awt.event.ActionListener() {
@@ -57,6 +107,7 @@ public class home extends javax.swing.JFrame {
                 btmemberActionPerformed(evt);
             }
         });
+        getContentPane().add(btmember, new org.netbeans.lib.awtextra.AbsoluteConstraints(286, 84, 94, 70));
 
         btadmin.setText("ADMIN");
         btadmin.addActionListener(new java.awt.event.ActionListener() {
@@ -64,6 +115,7 @@ public class home extends javax.swing.JFrame {
                 btadminActionPerformed(evt);
             }
         });
+        getContentPane().add(btadmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(41, 172, 94, 70));
 
         btvendor.setText("VENDOR");
         btvendor.addActionListener(new java.awt.event.ActionListener() {
@@ -71,6 +123,7 @@ public class home extends javax.swing.JFrame {
                 btvendorActionPerformed(evt);
             }
         });
+        getContentPane().add(btvendor, new org.netbeans.lib.awtextra.AbsoluteConstraints(164, 172, 94, 70));
 
         btlaporan.setText("LAPORAN");
         btlaporan.addActionListener(new java.awt.event.ActionListener() {
@@ -78,6 +131,7 @@ public class home extends javax.swing.JFrame {
                 btlaporanActionPerformed(evt);
             }
         });
+        getContentPane().add(btlaporan, new org.netbeans.lib.awtextra.AbsoluteConstraints(286, 172, 94, 70));
 
         btpegawai.setText("PEGAWAI");
         btpegawai.addActionListener(new java.awt.event.ActionListener() {
@@ -85,46 +139,19 @@ public class home extends javax.swing.JFrame {
                 btpegawaiActionPerformed(evt);
             }
         });
+        getContentPane().add(btpegawai, new org.netbeans.lib.awtextra.AbsoluteConstraints(163, 260, 94, 70));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btbarang, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29)
-                        .addComponent(btkasir, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
-                        .addComponent(btmember, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btadmin, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29)
-                        .addComponent(btvendor, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
-                        .addComponent(btlaporan, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btpegawai, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(58, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(84, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btkasir, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btbarang, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btmember, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btadmin, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btvendor, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btlaporan, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(btpegawai, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(47, 47, 47))
-        );
+        namaKar.setText("nama karyawan");
+        getContentPane().add(namaKar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, -1, -1));
+
+        emailKar.setText("email karyawan");
+        getContentPane().add(emailKar, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 10, -1, -1));
+
+        roleKar.setText("role karyawan");
+        getContentPane().add(roleKar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, -1, -1));
+
+        idKaryawan.setText("id karyawan");
+        getContentPane().add(idKaryawan, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 30, -1, -1));
 
         pack();
         setLocationRelativeTo(null);
@@ -132,14 +159,19 @@ public class home extends javax.swing.JFrame {
 
     private void btkasirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btkasirActionPerformed
         // TODO add your handling code here:
+        kasirPage.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_btkasirActionPerformed
 
     private void btbarangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btbarangActionPerformed
         // TODO add your handling code here:
+        barangPage.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_btbarangActionPerformed
 
     private void btmemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btmemberActionPerformed
         // TODO add your handling code here:
+        // memberPage.setVisible(true);
     }//GEN-LAST:event_btmemberActionPerformed
 
     private void btadminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btadminActionPerformed
@@ -148,6 +180,8 @@ public class home extends javax.swing.JFrame {
 
     private void btvendorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btvendorActionPerformed
         // TODO add your handling code here:
+        vendorPage.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_btvendorActionPerformed
 
     private void btlaporanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btlaporanActionPerformed
@@ -156,6 +190,8 @@ public class home extends javax.swing.JFrame {
 
     private void btpegawaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btpegawaiActionPerformed
         // TODO add your handling code here:
+        karyawanPage.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_btpegawaiActionPerformed
 
     /**
@@ -201,5 +237,9 @@ public class home extends javax.swing.JFrame {
     private javax.swing.JButton btmember;
     private javax.swing.JButton btpegawai;
     private javax.swing.JButton btvendor;
+    private javax.swing.JLabel emailKar;
+    private javax.swing.JLabel idKaryawan;
+    private javax.swing.JLabel namaKar;
+    private javax.swing.JLabel roleKar;
     // End of variables declaration//GEN-END:variables
 }
