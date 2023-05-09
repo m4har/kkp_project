@@ -70,129 +70,108 @@ public class home extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btkasir = new javax.swing.JButton();
-        btbarang = new javax.swing.JButton();
-        btmember = new javax.swing.JButton();
-        btadmin = new javax.swing.JButton();
-        btvendor = new javax.swing.JButton();
-        btlaporan = new javax.swing.JButton();
-        btpegawai = new javax.swing.JButton();
         namaKar = new javax.swing.JLabel();
         emailKar = new javax.swing.JLabel();
         roleKar = new javax.swing.JLabel();
         idKaryawan = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem9 = new javax.swing.JMenuItem();
+        jMenuItem10 = new javax.swing.JMenuItem();
+        jMenuItem11 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem12 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btkasir.setText("KASIR");
-        btkasir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btkasirActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btkasir, new org.netbeans.lib.awtextra.AbsoluteConstraints(164, 84, 94, 70));
-
-        btbarang.setText("BARANG");
-        btbarang.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btbarangActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btbarang, new org.netbeans.lib.awtextra.AbsoluteConstraints(41, 84, 94, 70));
-
-        btmember.setText("MEMBER");
-        btmember.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btmemberActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btmember, new org.netbeans.lib.awtextra.AbsoluteConstraints(286, 84, 94, 70));
-
-        btadmin.setText("ADMIN");
-        btadmin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btadminActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btadmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(41, 172, 94, 70));
-
-        btvendor.setText("VENDOR");
-        btvendor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btvendorActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btvendor, new org.netbeans.lib.awtextra.AbsoluteConstraints(164, 172, 94, 70));
-
-        btlaporan.setText("LAPORAN");
-        btlaporan.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btlaporanActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btlaporan, new org.netbeans.lib.awtextra.AbsoluteConstraints(286, 172, 94, 70));
-
-        btpegawai.setText("PEGAWAI");
-        btpegawai.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btpegawaiActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btpegawai, new org.netbeans.lib.awtextra.AbsoluteConstraints(163, 260, 94, 70));
-
         namaKar.setText("nama karyawan");
-        getContentPane().add(namaKar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, -1, -1));
+        getContentPane().add(namaKar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
 
         emailKar.setText("email karyawan");
-        getContentPane().add(emailKar, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 10, -1, -1));
+        getContentPane().add(emailKar, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 10, -1, -1));
 
         roleKar.setText("role karyawan");
-        getContentPane().add(roleKar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, -1, -1));
+        getContentPane().add(roleKar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, -1, -1));
 
         idKaryawan.setText("id karyawan");
-        getContentPane().add(idKaryawan, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 30, -1, -1));
+        getContentPane().add(idKaryawan, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 30, -1, -1));
+
+        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\ACS\\Documents\\kkp_project\\src\\assets\\image\\logo2.png")); // NOI18N
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
+
+        jMenu1.setText("Form");
+
+        jMenuItem1.setText("Admin");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setText("Member");
+        jMenu1.add(jMenuItem2);
+
+        jMenuItem4.setText("Vendor");
+        jMenu1.add(jMenuItem4);
+
+        jMenuItem3.setText("Barang");
+        jMenu1.add(jMenuItem3);
+
+        jMenuItem5.setText("Karyawan");
+        jMenu1.add(jMenuItem5);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Transaksi");
+
+        jMenuItem9.setText("Kasir");
+        jMenu2.add(jMenuItem9);
+
+        jMenuItem10.setText("Penerimaan Barang");
+        jMenu2.add(jMenuItem10);
+
+        jMenuItem11.setText("Barang Reject");
+        jMenu2.add(jMenuItem11);
+
+        jMenuBar1.add(jMenu2);
+
+        jMenu3.setText("Report");
+
+        jMenuItem6.setText("Penjualan");
+        jMenu3.add(jMenuItem6);
+
+        jMenuItem7.setText("Penerimaan Barang");
+        jMenu3.add(jMenuItem7);
+
+        jMenuItem8.setText("Barang Return");
+        jMenu3.add(jMenuItem8);
+
+        jMenuItem12.setText("Vendor");
+        jMenu3.add(jMenuItem12);
+
+        jMenuBar1.add(jMenu3);
+
+        setJMenuBar(jMenuBar1);
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btkasirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btkasirActionPerformed
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-        kasirPage.setVisible(true);
-        this.setVisible(false);
-    }//GEN-LAST:event_btkasirActionPerformed
-
-    private void btbarangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btbarangActionPerformed
-        // TODO add your handling code here:
-        barangPage.setVisible(true);
-        this.setVisible(false);
-    }//GEN-LAST:event_btbarangActionPerformed
-
-    private void btmemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btmemberActionPerformed
-        // TODO add your handling code here:
-        // memberPage.setVisible(true);
-    }//GEN-LAST:event_btmemberActionPerformed
-
-    private void btadminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btadminActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btadminActionPerformed
-
-    private void btvendorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btvendorActionPerformed
-        // TODO add your handling code here:
-        vendorPage.setVisible(true);
-        this.setVisible(false);
-    }//GEN-LAST:event_btvendorActionPerformed
-
-    private void btlaporanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btlaporanActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btlaporanActionPerformed
-
-    private void btpegawaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btpegawaiActionPerformed
-        // TODO add your handling code here:
-        karyawanPage.setVisible(true);
-        this.setVisible(false);
-    }//GEN-LAST:event_btpegawaiActionPerformed
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -230,15 +209,25 @@ public class home extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btadmin;
-    private javax.swing.JButton btbarang;
-    private javax.swing.JButton btkasir;
-    private javax.swing.JButton btlaporan;
-    private javax.swing.JButton btmember;
-    private javax.swing.JButton btpegawai;
-    private javax.swing.JButton btvendor;
     private javax.swing.JLabel emailKar;
     private javax.swing.JLabel idKaryawan;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
+    private javax.swing.JMenuItem jMenuItem11;
+    private javax.swing.JMenuItem jMenuItem12;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JLabel namaKar;
     private javax.swing.JLabel roleKar;
     // End of variables declaration//GEN-END:variables
