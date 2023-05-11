@@ -20,6 +20,7 @@ public class karyawan extends javax.swing.JFrame {
     Statement st;
     ResultSet rs;
     String sql,selectRole;
+    String loginRole = "admin";
     /**
      * Creates new form karyawan
      */
@@ -29,6 +30,34 @@ public class karyawan extends javax.swing.JFrame {
         setupDB();
         generateIdPegawai();
         getDataTable();
+    }
+    
+    public void onLoad(String value){
+        loginRole = value;
+        if(value == "admin"){
+            btntambah.setEnabled(true);
+            btnubah.setEnabled(true);
+            btnhapus.setEnabled(true);
+            btnbatal.setEnabled(true);
+            txtnama.setEditable(true);
+            areaalamat.setEditable(true);
+            cbposisi.setEditable(true);
+            txtemail.setEditable(true);
+            txtnohp.setEditable(true);
+            txtpasswd.setEditable(true);
+        } else {
+            btntambah.setEnabled(false);
+            btnubah.setEnabled(false);
+            btnhapus.setEnabled(false);
+            btnbatal.setEnabled(false);
+            txtnama.setEditable(false);
+            areaalamat.setEditable(false);
+            cbposisi.setEditable(false);
+            txtemail.setEditable(false);
+            txtnohp.setEditable(false);
+            txtpasswd.setEditable(false);
+        }
+            
     }
     
    void setupDB(){
@@ -111,6 +140,20 @@ public class karyawan extends javax.swing.JFrame {
             txtClear();
         } catch (Exception e) {
             System.out.println("create pelanggan"+e);
+        }
+    }
+     
+      void deleteKaryawan(){
+        String id = txtid.getText();
+        String query = "UPDATE karyawan SET isDeleted = 1 WHERE id = '"+id+"'";
+        try {
+            st = con.createStatement();
+            st.executeUpdate(query);
+            getDataTable();
+            txtClear();
+            st.close();
+        } catch (Exception e) {
+            System.out.println("gagal delete "+e);
         }
     }
 
@@ -251,6 +294,11 @@ public class karyawan extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblKar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblKarMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tblKar);
 
         jLabel8.setText("Cari Karyawan");
@@ -453,11 +501,14 @@ public class karyawan extends javax.swing.JFrame {
 
     private void btnhapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnhapusActionPerformed
         // TODO add your handling code here:
+        deleteKaryawan();
     }//GEN-LAST:event_btnhapusActionPerformed
 
     private void btnbatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbatalActionPerformed
         // TODO add your handling code here:
         txtClear();
+        onLoad(loginRole);
+        generateIdPegawai();
     }//GEN-LAST:event_btnbatalActionPerformed
 
     private void txtcariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcariActionPerformed
@@ -473,6 +524,33 @@ public class karyawan extends javax.swing.JFrame {
 
        selectRole = cbposisi.getSelectedItem().toString();
     }//GEN-LAST:event_cbposisiActionPerformed
+
+    private void tblKarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblKarMouseClicked
+        // TODO add your handling code here:
+        // TODO add your handling code here:
+        int bar = tblKar.getSelectedRow();
+        txtid.setText(tblKar.getValueAt(bar, 0).toString());
+        txtnama.setText(tblKar.getValueAt(bar, 1).toString());
+        
+        if(tblKar.getValueAt(bar, 2).toString() == "admin"){
+           cbposisi.setSelectedIndex(0);
+        } else if(tblKar.getValueAt(bar, 2).toString() == "staff") {
+            cbposisi.setSelectedIndex(1);
+        }
+        areaalamat.setText(tblKar.getValueAt(bar, 3).toString());
+        txtnohp.setText(tblKar.getValueAt(bar, 4).toString());
+        txtemail.setText(tblKar.getValueAt(bar, 4).toString());
+
+       
+        if(loginRole == "admin"){
+            txtpasswd.setEditable(false);
+            btntambah.setEnabled(false);
+            btnubah.setEnabled(true);
+            btnhapus.setEnabled(true);
+            btnbatal.setEnabled(true);
+    }
+        
+    }//GEN-LAST:event_tblKarMouseClicked
 
     /**
      * @param args the command line arguments
