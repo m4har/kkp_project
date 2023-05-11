@@ -29,7 +29,7 @@ public class login extends javax.swing.JFrame {
         initComponents();
         setResizable(false);
         // set logo
-        krblogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/image/logo.png")));
+        krblogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/image/logo2.png")));
         // krblogo.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource("/res/image.png")).getImage().getScaledInstance(200, 50, Image.SCALE_DEFAULT)));
     }
    void setupDB(){

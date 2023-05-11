@@ -31,7 +31,8 @@ public class home extends javax.swing.JFrame {
      */
     public home() {
         initComponents();
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/image/logo2.png")));
+        krblogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/image/logo2.png")));
+        // krblogo.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource("/res/image.png")).getImage().getScaledInstance(200, 50, Image.SCALE_DEFAULT)));
     }
     void setupDB(){
          // db
@@ -76,6 +77,7 @@ public class home extends javax.swing.JFrame {
         roleKar = new javax.swing.JLabel();
         idKaryawan = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        krblogo = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -109,6 +111,9 @@ public class home extends javax.swing.JFrame {
         getContentPane().add(idKaryawan, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 30, -1, -1));
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
 
+        krblogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pages/logo2.png"))); // NOI18N
+        getContentPane().add(krblogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, -1, -1));
+
         jMenu1.setText("Form");
 
         jMenuItem1.setText("Admin");
@@ -141,7 +146,7 @@ public class home extends javax.swing.JFrame {
         jMenuItem10.setText("Penerimaan Barang");
         jMenu2.add(jMenuItem10);
 
-        jMenuItem11.setText("Barang Reject");
+        jMenuItem11.setText("Barang Return");
         jMenu2.add(jMenuItem11);
 
         jMenuBar1.add(jMenu2);
@@ -227,6 +232,7 @@ public class home extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
+    private javax.swing.JLabel krblogo;
     private javax.swing.JLabel namaKar;
     private javax.swing.JLabel roleKar;
     // End of variables declaration//GEN-END:variables
