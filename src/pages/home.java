@@ -78,6 +78,10 @@ public class home extends javax.swing.JFrame {
         idKaryawan = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         krblogo = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -99,20 +103,36 @@ public class home extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         namaKar.setText("nama karyawan");
-        getContentPane().add(namaKar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
+        getContentPane().add(namaKar, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, -1, -1));
 
         emailKar.setText("email karyawan");
-        getContentPane().add(emailKar, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 10, -1, -1));
+        getContentPane().add(emailKar, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 50, -1, -1));
 
         roleKar.setText("role karyawan");
-        getContentPane().add(roleKar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, -1, -1));
+        getContentPane().add(roleKar, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 30, -1, -1));
 
         idKaryawan.setText("id karyawan");
-        getContentPane().add(idKaryawan, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 30, -1, -1));
+        getContentPane().add(idKaryawan, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 30, -1, -1));
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
 
-        krblogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pages/logo2.png"))); // NOI18N
-        getContentPane().add(krblogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, -1, -1));
+        krblogo.setIcon(new javax.swing.ImageIcon("C:\\Users\\ACS\\Documents\\kkp_project\\src\\assets\\image\\logo2.png")); // NOI18N
+        krblogo.setMaximumSize(new java.awt.Dimension(400, 317));
+        krblogo.setMinimumSize(new java.awt.Dimension(400, 317));
+        krblogo.setPreferredSize(new java.awt.Dimension(400, 317));
+        getContentPane().add(krblogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 90, 230, 230));
+
+        jLabel1.setText("Nama :");
+        jLabel1.setToolTipText("");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, -1, -1));
+
+        jLabel3.setText("ID        :");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, -1, -1));
+
+        jLabel4.setText("Email      :");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 50, -1, -1));
+
+        jLabel5.setText("Jabatan :");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 30, -1, -1));
 
         jMenu1.setText("Form");
 
@@ -215,7 +235,11 @@ public class home extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel emailKar;
     private javax.swing.JLabel idKaryawan;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
