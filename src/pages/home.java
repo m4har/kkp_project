@@ -115,7 +115,6 @@ public class home extends javax.swing.JFrame {
         getContentPane().add(idKaryawan, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 30, -1, -1));
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
 
-        krblogo.setIcon(new javax.swing.ImageIcon("C:\\Users\\ACS\\Documents\\kkp_project\\src\\assets\\image\\logo2.png")); // NOI18N
         krblogo.setMaximumSize(new java.awt.Dimension(400, 317));
         krblogo.setMinimumSize(new java.awt.Dimension(400, 317));
         krblogo.setPreferredSize(new java.awt.Dimension(400, 317));
@@ -154,6 +153,11 @@ public class home extends javax.swing.JFrame {
         jMenu1.add(jMenuItem3);
 
         jMenuItem5.setText("Karyawan");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem5);
 
         jMenuBar1.add(jMenu1);
@@ -196,6 +200,12 @@ public class home extends javax.swing.JFrame {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        // TODO add your handling code here:
+        karyawanPage.onLoad(roleKar.getText());
+        karyawanPage.setVisible(true);
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     /**
      * @param args the command line arguments
