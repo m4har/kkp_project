@@ -5,24 +5,113 @@
  */
 package pages;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.UUID;
+import javax.swing.table.DefaultTableModel;
+import utils.koneksi;
 /**
  *
  * @author mahar
  */
 public class karyawan extends javax.swing.JFrame {
-
+    Connection con;
+    Statement st;
+    ResultSet rs;
+    String sql,selectRole;
     /**
      * Creates new form karyawan
      */
     public karyawan() {
         initComponents();
         txtid.setEnabled(false);
+        setupDB();
         generateIdPegawai();
+        getDataTable();
+    }
+    
+   void setupDB(){
+         // db
+        koneksi DB = new koneksi();
+        DB.config();
+        con = DB.con;
+        st = DB.stm;
+    }
+   
+    void txtClear(){
+        txtnama.setText("");
+        areaalamat.setText("");
+        cbposisi.setSelectedIndex(0);
+        txtemail.setText("");
+        txtnohp.setText("");
+        txtpasswd.setText("");
     }
     
     void generateIdPegawai(){
-        txtid.setText(UUID.randomUUID().toString());
+        String query = "select COUNT(*) from karyawan";
+        Number count;
+        try {
+            st = con.createStatement();
+            rs = st.executeQuery(query);
+            while(rs.next()){
+                count = Integer.parseInt(rs.getString(1))+1;
+                txtid.setText("k"+count);
+            }
+            rs.close();
+        } catch (Exception e) {
+            System.out.println("generate id"+e);
+        }
+    }
+    
+        // get data untuk table
+    public void getDataTable(){
+        String searchItem = txtcari.getText();
+        String query = "select id,nama,role,alamat,noHp,email,isDeleted from karyawan where id like '%"+searchItem+"%' or nama like '%"+searchItem+"%' order by id asc";
+        Object[] baris = {"ID","Nama","Role","Alamat","No Hp","Email"};
+        DefaultTableModel tabmode = new DefaultTableModel(null, baris);
+        try {
+            st = con.createStatement();
+            rs = st.executeQuery(query);
+            while(rs.next()){
+                if(!rs.getBoolean(7)){
+                    tabmode.addRow(new Object[]{
+                        rs.getString(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getString(6),
+                    });
+                }
+            
+            }
+            rs.close();
+            tblKar.setModel(tabmode);
+        } catch (Exception e) {
+            System.out.println("tabel kar : "+e);
+        }
+    }
+     void createKaryawan(){
+        String id = txtid.getText();
+        String nama = txtnama.getText();
+        String noHp = txtnohp.getText();
+        String alamat = areaalamat.getText();
+        String role = selectRole;
+        String email = txtemail.getText();
+        String passwd = txtpasswd.getText();
+        String query = "INSERT INTO karyawan (id, role, nama, alamat, noHp,email,password,isDeleted) VALUES('"+id+"','"+role+"','"+nama+"','"+alamat+"','"+noHp+"','"+email+"','"+passwd+"','"+0+"')";
+        System.out.println(query);
+        try {
+            st = con.createStatement();
+            st.executeUpdate(query);
+            generateIdPegawai();
+            getDataTable();
+            st.close();
+            txtClear();
+        } catch (Exception e) {
+            System.out.println("create pelanggan"+e);
+        }
     }
 
     /**
@@ -55,7 +144,7 @@ public class karyawan extends javax.swing.JFrame {
         btnbatal = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblKar = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
         txtcari = new javax.swing.JTextField();
         btncari = new javax.swing.JButton();
@@ -67,6 +156,7 @@ public class karyawan extends javax.swing.JFrame {
 
         jLabel1.setText("ID Karyawan");
 
+        txtid.setEditable(false);
         txtid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtidActionPerformed(evt);
@@ -83,7 +173,12 @@ public class karyawan extends javax.swing.JFrame {
 
         jLabel3.setText("Posisi Karyawan");
 
-        cbposisi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbposisi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "staff", "admin" }));
+        cbposisi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbposisiActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Alamat Karyawan");
 
@@ -145,7 +240,7 @@ public class karyawan extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("List Pegawai"));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblKar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -156,7 +251,7 @@ public class karyawan extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable1);
+        jScrollPane2.setViewportView(tblKar);
 
         jLabel8.setText("Cari Karyawan");
 
@@ -320,8 +415,7 @@ public class karyawan extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnkeluar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(btnkeluar, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE))
         );
 
         pack();
@@ -350,6 +444,7 @@ public class karyawan extends javax.swing.JFrame {
 
     private void btntambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntambahActionPerformed
         // TODO add your handling code here:
+        createKaryawan();
     }//GEN-LAST:event_btntambahActionPerformed
 
     private void btnubahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnubahActionPerformed
@@ -362,6 +457,7 @@ public class karyawan extends javax.swing.JFrame {
 
     private void btnbatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbatalActionPerformed
         // TODO add your handling code here:
+        txtClear();
     }//GEN-LAST:event_btnbatalActionPerformed
 
     private void txtcariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcariActionPerformed
@@ -370,7 +466,13 @@ public class karyawan extends javax.swing.JFrame {
 
     private void btncariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncariActionPerformed
         // TODO add your handling code here:
+        getDataTable();
     }//GEN-LAST:event_btncariActionPerformed
+
+    private void cbposisiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbposisiActionPerformed
+
+       selectRole = cbposisi.getSelectedItem().toString();
+    }//GEN-LAST:event_cbposisiActionPerformed
 
     /**
      * @param args the command line arguments
@@ -428,7 +530,7 @@ public class karyawan extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblKar;
     private javax.swing.JTextField txtcari;
     private javax.swing.JTextField txtemail;
     private javax.swing.JTextField txtid;
