@@ -4,20 +4,79 @@
  * and open the template in the editor.
  */
 package pages;
-
+import java.sql.*;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.awt.event.KeyEvent;
+import utils.koneksi;
 /**
  *
  * @author Mahardicka
  */
-public class barangreturn extends javax.swing.JFrame {
+public final class barangreturn extends javax.swing.JFrame {
+Connection con;
+    Statement stat;
+    ResultSet rs;
+    String sql;
+private DefaultTableModel tabmode;
+
 
     /**
      * Creates new form barang
      */
     public barangreturn() {
         initComponents();
+        setupDB();
+        kosong();
+        aktif();
+        datatable();
+    }
+    void setupDB(){
+         // db
+        koneksi DB = new koneksi();
+        DB.config();
+        con = DB.con;
+    Statement st = DB.stm;
+    }
+    
+    protected void aktif(){
+        txtidbarangreturn.requestFocus();
     }
 
+    protected void kosong(){
+        txtidbarangreturn.setText("");
+        txtidbarang.setText("");
+        txtidkaryawan.setText("");
+        txttanggal.setText("");
+        txtjumlah.setText("");
+        areacatatan.setText("");
+    }
+    
+    protected void datatable(){
+        Object[] Baris ={"ID","ID Barang","ID Karyawan","Tanggal","Jumlah","Catatan"};
+          tabmode = new DefaultTableModel(null,Baris);
+          String cariitem=txtcari.getText();
+          
+          try{
+              String sql = "SELECT * FROM barangreturn where id like '%"+cariitem+"%' or id like '%"+cariitem+"%' order by id asc";
+              Statement st = con.createStatement();
+              ResultSet hasil = st.executeQuery(sql);
+              while (hasil.next()){
+                  tabmode.addRow(new Object[]{
+                      hasil.getString(1),
+                      hasil.getString(2),
+                      hasil.getString(3),
+                      hasil.getString(4),
+                      hasil.getString(5),
+                      hasil.getString(6)
+                  
+                  });
+              }
+              tblreturn.setModel(tabmode);
+          } catch (SQLException e){
+              JOptionPane.showMessageDialog(null, "Data gagal dipanggil"+e);
+          }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,7 +87,7 @@ public class barangreturn extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        txtidterimabarang = new javax.swing.JTextField();
+        txtidbarangreturn = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txttanggal = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
@@ -39,14 +98,14 @@ public class barangreturn extends javax.swing.JFrame {
         btntambah = new javax.swing.JButton();
         btnbatal = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblreturn = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
         txtcari = new javax.swing.JTextField();
         btncari = new javax.swing.JButton();
         btnhapus = new javax.swing.JButton();
         btnkeluar = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
-        txtid = new javax.swing.JTextField();
+        txtidkaryawan = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         areacatatan = new javax.swing.JTextArea();
@@ -56,9 +115,9 @@ public class barangreturn extends javax.swing.JFrame {
 
         jLabel1.setText("ID");
 
-        txtidterimabarang.addActionListener(new java.awt.event.ActionListener() {
+        txtidbarangreturn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtidterimabarangActionPerformed(evt);
+                txtidbarangreturnActionPerformed(evt);
             }
         });
 
@@ -102,24 +161,34 @@ public class barangreturn extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblreturn.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Nama", "Kategori", "Stock", "Vendor", "Harga Beli", "Harga Jual"
+                "ID", "ID Barang", "ID Karyawan", "Tanggal", "Jumlah", "Catatan"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tblreturn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblreturnMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblreturn);
 
         jLabel8.setText("Cari Barang");
 
         txtcari.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtcariActionPerformed(evt);
+            }
+        });
+        txtcari.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtcariKeyPressed(evt);
             }
         });
 
@@ -131,6 +200,11 @@ public class barangreturn extends javax.swing.JFrame {
         });
 
         btnhapus.setText("Hapus");
+        btnhapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnhapusActionPerformed(evt);
+            }
+        });
 
         btnkeluar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btnkeluar.setText("Keluar");
@@ -163,7 +237,7 @@ public class barangreturn extends javax.swing.JFrame {
                                         .addGroup(layout.createSequentialGroup()
                                             .addGap(11, 11, 11)
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(txtidterimabarang, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(txtidbarangreturn, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addComponent(jLabel1)))
                                         .addGroup(layout.createSequentialGroup()
                                             .addContainerGap()
@@ -175,7 +249,7 @@ public class barangreturn extends javax.swing.JFrame {
                                         .addContainerGap()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel9)
-                                            .addComponent(txtid, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addComponent(txtidkaryawan, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel5)
@@ -188,10 +262,10 @@ public class barangreturn extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(btnbatal, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(btnhapus, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(btntambah, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(btntambah, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+                                            .addComponent(btnbatal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(btnhapus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(220, 220, 220)
                                 .addComponent(jLabel3))
@@ -200,7 +274,7 @@ public class barangreturn extends javax.swing.JFrame {
                                 .addComponent(txtcari, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btncari)))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 43, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -230,7 +304,7 @@ public class barangreturn extends javax.swing.JFrame {
                                 .addGroup(layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
-                                            .addComponent(txtidterimabarang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtidbarangreturn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                             .addComponent(jLabel7))
                                         .addGroup(layout.createSequentialGroup()
@@ -244,7 +318,7 @@ public class barangreturn extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(jLabel9)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtidkaryawan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(btntambah)
@@ -269,9 +343,9 @@ public class barangreturn extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtidterimabarangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtidterimabarangActionPerformed
+    private void txtidbarangreturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtidbarangreturnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtidterimabarangActionPerformed
+    }//GEN-LAST:event_txtidbarangreturnActionPerformed
 
     private void txttanggalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txttanggalActionPerformed
         // TODO add your handling code here:
@@ -286,10 +360,31 @@ public class barangreturn extends javax.swing.JFrame {
     }//GEN-LAST:event_txtidbarangActionPerformed
 
     private void btntambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntambahActionPerformed
-        // TODO add your handling code here:
+String sql = "insert into barangreturn values (?,?,?,?,?,?)";
+    try{
+        PreparedStatement st=con.prepareStatement(sql);
+        st.setString(1, txtidbarangreturn.getText());
+        st.setString(2, txtidbarang.getText());
+        st.setString(3, txtidkaryawan.getText());
+        st.setString(4, txttanggal.getText());
+        st.setString(5, txtjumlah.getText());
+        st.setString(6, areacatatan.getText());
+        
+        st.executeUpdate();
+        JOptionPane.showMessageDialog(null, "Data berhasil ditambah");
+        kosong();
+        txtidbarangreturn.requestFocus();    
+    }
+    catch (SQLException e){
+        JOptionPane.showMessageDialog(null, "Data gagal ditambah");
+         } 
+         datatable();
     }//GEN-LAST:event_btntambahActionPerformed
 
+    
     private void btnbatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbatalActionPerformed
+        kosong();
+        datatable();
         // TODO add your handling code here:
     }//GEN-LAST:event_btnbatalActionPerformed
 
@@ -298,50 +393,63 @@ public class barangreturn extends javax.swing.JFrame {
     }//GEN-LAST:event_txtcariActionPerformed
 
     private void btncariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncariActionPerformed
+        datatable();
         // TODO add your handling code here:
     }//GEN-LAST:event_btncariActionPerformed
 
     private void btnkeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnkeluarActionPerformed
+    this.setVisible(false);
         // TODO add your handling code here:
     }//GEN-LAST:event_btnkeluarActionPerformed
+
+    private void btnhapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnhapusActionPerformed
+    int ok = JOptionPane.showConfirmDialog(null,"Hapus","Konfirmasi dialog",JOptionPane.YES_NO_OPTION);
+           if (ok==0){
+               String sql = "Delete from barangreturn where id ='"+txtidbarangreturn.getText()+"'";
+               try{
+                   PreparedStatement st = con.prepareStatement(sql);
+                   st.executeUpdate();
+                   JOptionPane.showMessageDialog(null, "Data berhasil dihapus");
+                   kosong();
+                   txtidbarangreturn.requestFocus();    
+                }
+                catch (SQLException e){
+                JOptionPane.showMessageDialog(null, "Data gagal dihapus");
+                }   
+               datatable();
+           }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnhapusActionPerformed
+
+    private void txtcariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcariKeyPressed
+      if (evt.getKeyCode()== KeyEvent.VK_ENTER){
+          datatable();
+      }  
+    // TODO add your handling code here:
+    }//GEN-LAST:event_txtcariKeyPressed
+
+    private void tblreturnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblreturnMouseClicked
+        int bar = tblreturn.getSelectedRow();
+        String a = tabmode.getValueAt(bar, 0).toString();
+        String b = tabmode.getValueAt(bar, 1).toString();
+        String c = tabmode.getValueAt(bar, 2).toString();
+        String d = tabmode.getValueAt(bar, 3).toString();
+        String e = tabmode.getValueAt(bar, 4).toString();
+        String f = tabmode.getValueAt(bar, 5).toString();
+        
+        txtidbarangreturn.setText(a);
+        txtidbarang.setText(b);
+        txtidkaryawan.setText(c);
+        txttanggal.setText(d);
+        txtjumlah.setText(e);
+        areacatatan.setText(f);
+             
+    }//GEN-LAST:event_tblreturnMouseClicked
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(barangreturn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(barangreturn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(barangreturn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(barangreturn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new barangreturn().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea areacatatan;
@@ -360,12 +468,13 @@ public class barangreturn extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblreturn;
     private javax.swing.JTextField txtcari;
-    private javax.swing.JTextField txtid;
     private javax.swing.JTextField txtidbarang;
-    private javax.swing.JTextField txtidterimabarang;
+    private javax.swing.JTextField txtidbarangreturn;
+    private javax.swing.JTextField txtidkaryawan;
     private javax.swing.JTextField txtjumlah;
     private javax.swing.JTextField txttanggal;
     // End of variables declaration//GEN-END:variables
+
 }

@@ -34,7 +34,7 @@
                                       <Group type="102" attributes="0">
                                           <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="txtidterimabarang" alignment="0" min="-2" pref="108" max="-2" attributes="0"/>
+                                              <Component id="txtidbarangreturn" alignment="0" min="-2" pref="108" max="-2" attributes="0"/>
                                               <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
@@ -51,7 +51,7 @@
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-                                          <Component id="txtid" alignment="0" min="-2" pref="108" max="-2" attributes="0"/>
+                                          <Component id="txtidkaryawan" alignment="0" min="-2" pref="108" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -68,10 +68,10 @@
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="jScrollPane2" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="btnbatal" min="-2" pref="71" max="-2" attributes="0"/>
-                                          <Component id="btnhapus" min="-2" pref="71" max="-2" attributes="0"/>
-                                          <Component id="btntambah" min="-2" pref="73" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="btntambah" pref="91" max="32767" attributes="0"/>
+                                          <Component id="btnbatal" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="btnhapus" alignment="0" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -87,7 +87,7 @@
                               <Component id="btncari" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="43" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
@@ -126,7 +126,7 @@
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" attributes="0">
-                                          <Component id="txtidterimabarang" min="-2" max="-2" attributes="0"/>
+                                          <Component id="txtidbarangreturn" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                                       </Group>
@@ -144,7 +144,7 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="txtid" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtidkaryawan" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Component id="jScrollPane2" min="-2" pref="112" max="-2" attributes="0"/>
                           </Group>
@@ -181,9 +181,9 @@
         <Property name="text" type="java.lang.String" value="ID"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtidterimabarang">
+    <Component class="javax.swing.JTextField" name="txtidbarangreturn">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtidterimabarangActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtidbarangreturnActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
@@ -244,17 +244,16 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="jTable1">
+        <Component class="javax.swing.JTable" name="tblreturn">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="7" rowCount="4">
+              <Table columnCount="6" rowCount="4">
                 <Column editable="true" title="ID" type="java.lang.Object"/>
-                <Column editable="true" title="Nama" type="java.lang.Object"/>
-                <Column editable="true" title="Kategori" type="java.lang.Object"/>
-                <Column editable="true" title="Stock" type="java.lang.Object"/>
-                <Column editable="true" title="Vendor" type="java.lang.Object"/>
-                <Column editable="true" title="Harga Beli" type="java.lang.Object"/>
-                <Column editable="true" title="Harga Jual" type="java.lang.Object"/>
+                <Column editable="true" title="ID Barang" type="java.lang.Object"/>
+                <Column editable="true" title="ID Karyawan" type="java.lang.Object"/>
+                <Column editable="true" title="Tanggal" type="java.lang.Object"/>
+                <Column editable="true" title="Jumlah" type="java.lang.Object"/>
+                <Column editable="true" title="Catatan" type="java.lang.Object"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -300,6 +299,9 @@
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblreturnMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -311,6 +313,7 @@
     <Component class="javax.swing.JTextField" name="txtcari">
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtcariActionPerformed"/>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtcariKeyPressed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btncari">
@@ -325,6 +328,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Hapus"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnhapusActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnkeluar">
       <Properties>
@@ -342,7 +348,7 @@
         <Property name="text" type="java.lang.String" value="ID Karyawan"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtid">
+    <Component class="javax.swing.JTextField" name="txtidkaryawan">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
