@@ -5,17 +5,117 @@
  */
 package pages;
 
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.table.DefaultTableModel;
+import utils.koneksi;
+
 /**
  *
  * @author mahar
  */
 public class vendor extends javax.swing.JFrame {
+    
+    Connection con;
+    Statement st;
+    ResultSet rs;
+    String sql,selectRole;
 
     /**
      * Creates new form vendor
      */
     public vendor() {
         initComponents();
+        generateIdVendor();
+        getDataTable();
+        txtClear();
+    }
+    
+    void setupDB(){
+         // db
+        koneksi DB = new koneksi();
+        DB.config();
+        con = DB.con;
+        st = DB.stm;
+    }
+    
+    void txtClear(){
+        txtnama.setText("");
+        areaalamat.setText("");
+        txtemail.setText("");
+        txtnohp.setText("");
+        btnubah.setEnabled(false);
+        btntambah.setEnabled(true);
+        generateIdVendor();
+    }
+    
+    void generateIdVendor(){
+        setupDB();
+        String query = "select COUNT(*) from vendor";
+        Number count;
+        try {
+            st = con.createStatement();
+            rs = st.executeQuery(query);
+            while(rs.next()){
+                count = Integer.parseInt(rs.getString(1))+1;
+                txtid.setText("v"+count);
+            }
+            rs.close();
+        } catch (Exception e) {
+            System.out.println("generate id vendor"+e);
+        }
+    }
+    
+     // get data untuk table
+    public void getDataTable(){
+         setupDB();
+        String searchItem = txtcari.getText();
+        String query = "select id,nama,alamat,noHp,email,isDeleted from vendor where id like '%"+searchItem+"%' or nama like '%"+searchItem+"%' order by id asc";
+        Object[] baris = {"ID","Nama","Alamat","No HP","Email"};
+        DefaultTableModel tabmode = new DefaultTableModel(null, baris);
+        try {
+            st = con.createStatement();
+            rs = st.executeQuery(query);
+            while(rs.next()){
+                if(!rs.getBoolean(6)){
+                    tabmode.addRow(new Object[]{
+                        rs.getString(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                    });
+                }
+            
+            }
+            rs.close();
+            tbvendor.setModel(tabmode);
+        } catch (Exception e) {
+            System.out.println("tabel kar : "+e);
+        }
+    }
+    
+     void createKaryawan(){
+        setupDB();
+        String id = txtid.getText();
+        String nama = txtnama.getText();
+        String noHp = txtnohp.getText();
+        String alamat = areaalamat.getText();
+        String email = txtemail.getText();
+        String query = "INSERT INTO vendor (`id`, `nama`, `alamat`, `noHp`, `email`, `isDeleted`) VALUES('"+id+"','"+nama+"','"+alamat+"','"+noHp+"','"+email+"','"+0+"')";
+        System.out.println(query);
+        try {
+            st = con.createStatement();
+            st.executeUpdate(query);
+            generateIdVendor();
+            getDataTable();
+            st.close();
+            txtClear();
+        } catch (Exception e) {
+            System.out.println("create pelanggan"+e);
+        }
     }
 
     /**
@@ -33,7 +133,6 @@ public class vendor extends javax.swing.JFrame {
         txtemail = new javax.swing.JTextField();
         btntambah = new javax.swing.JButton();
         btnubah = new javax.swing.JButton();
-        btnhapus = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         txtid = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -44,14 +143,14 @@ public class vendor extends javax.swing.JFrame {
         btnbatal = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbvendor = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
         txtcari = new javax.swing.JTextField();
         btncari = new javax.swing.JButton();
         btnkeluar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Vendor");
 
         jLabel5.setText("NO Hp");
@@ -84,15 +183,9 @@ public class vendor extends javax.swing.JFrame {
             }
         });
 
-        btnhapus.setText("Hapus");
-        btnhapus.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnhapusActionPerformed(evt);
-            }
-        });
-
         jLabel1.setText("ID Vendor");
 
+        txtid.setEditable(false);
         txtid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtidActionPerformed(evt);
@@ -122,7 +215,7 @@ public class vendor extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("List Vendor"));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbvendor.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -133,13 +226,26 @@ public class vendor extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable1);
+        tbvendor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbvendorMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tbvendor);
 
         jLabel8.setText("Cari Vendor");
 
         txtcari.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtcariActionPerformed(evt);
+            }
+        });
+        txtcari.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtcariKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtcariKeyTyped(evt);
             }
         });
 
@@ -211,8 +317,6 @@ public class vendor extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(btnubah)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(btnhapus)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(btnbatal))
                                 .addGroup(layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -264,7 +368,6 @@ public class vendor extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btntambah)
                     .addComponent(btnubah)
-                    .addComponent(btnhapus)
                     .addComponent(btnbatal))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 449, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -286,15 +389,12 @@ public class vendor extends javax.swing.JFrame {
 
     private void btntambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntambahActionPerformed
         // TODO add your handling code here:
+        createKaryawan();
     }//GEN-LAST:event_btntambahActionPerformed
 
     private void btnubahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnubahActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnubahActionPerformed
-
-    private void btnhapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnhapusActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnhapusActionPerformed
 
     private void txtidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtidActionPerformed
         // TODO add your handling code here:
@@ -306,6 +406,7 @@ public class vendor extends javax.swing.JFrame {
 
     private void btnbatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbatalActionPerformed
         // TODO add your handling code here:
+        txtClear();
     }//GEN-LAST:event_btnbatalActionPerformed
 
     private void txtcariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcariActionPerformed
@@ -314,11 +415,41 @@ public class vendor extends javax.swing.JFrame {
 
     private void btncariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncariActionPerformed
         // TODO add your handling code here:
+       getDataTable(); 
     }//GEN-LAST:event_btncariActionPerformed
 
     private void btnkeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnkeluarActionPerformed
         // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_btnkeluarActionPerformed
+
+    private void tbvendorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbvendorMouseClicked
+        // TODO add your handling code here:
+        int bar = tbvendor.getSelectedRow();
+        txtid.setText(tbvendor.getValueAt(bar, 0).toString());
+        txtnama.setText(tbvendor.getValueAt(bar, 1).toString());
+        
+        areaalamat.setText(tbvendor.getValueAt(bar, 2).toString());
+        txtnohp.setText(tbvendor.getValueAt(bar, 3).toString());
+        txtemail.setText(tbvendor.getValueAt(bar, 4).toString());
+
+       
+            btntambah.setEnabled(false);
+            btnubah.setEnabled(true);
+            btnbatal.setEnabled(true);
+    }//GEN-LAST:event_tbvendorMouseClicked
+
+    private void txtcariKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcariKeyTyped
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_txtcariKeyTyped
+
+    private void txtcariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcariKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            getDataTable();
+        }
+    }//GEN-LAST:event_txtcariKeyPressed
 
     /**
      * @param args the command line arguments
@@ -359,7 +490,6 @@ public class vendor extends javax.swing.JFrame {
     private javax.swing.JTextArea areaalamat;
     private javax.swing.JButton btnbatal;
     private javax.swing.JButton btncari;
-    private javax.swing.JButton btnhapus;
     private javax.swing.JButton btnkeluar;
     private javax.swing.JButton btntambah;
     private javax.swing.JButton btnubah;
@@ -373,7 +503,7 @@ public class vendor extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tbvendor;
     private javax.swing.JTextField txtcari;
     private javax.swing.JTextField txtemail;
     private javax.swing.JTextField txtid;

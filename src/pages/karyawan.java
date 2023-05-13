@@ -34,6 +34,7 @@ public class karyawan extends javax.swing.JFrame {
     
     public void onLoad(String value){
         loginRole = value;
+        System.out.println(value);
         if(value == "admin"){
             btntambah.setEnabled(true);
             btnubah.setEnabled(true);
@@ -75,6 +76,7 @@ public class karyawan extends javax.swing.JFrame {
         txtemail.setText("");
         txtnohp.setText("");
         txtpasswd.setText("");
+        generateIdPegawai();
     }
     
     void generateIdPegawai(){
@@ -95,6 +97,7 @@ public class karyawan extends javax.swing.JFrame {
     
         // get data untuk table
     public void getDataTable(){
+        setupDB();
         String searchItem = txtcari.getText();
         String query = "select id,nama,role,alamat,noHp,email,isDeleted from karyawan where id like '%"+searchItem+"%' or nama like '%"+searchItem+"%' order by id asc";
         Object[] baris = {"ID","Nama","Role","Alamat","No Hp","Email"};
@@ -122,6 +125,7 @@ public class karyawan extends javax.swing.JFrame {
         }
     }
      void createKaryawan(){
+        setupDB();
         String id = txtid.getText();
         String nama = txtnama.getText();
         String noHp = txtnohp.getText();
@@ -194,7 +198,7 @@ public class karyawan extends javax.swing.JFrame {
         btnkeluar = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Pegawai");
 
         jLabel1.setText("ID Karyawan");
@@ -349,6 +353,11 @@ public class karyawan extends javax.swing.JFrame {
 
         btnkeluar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btnkeluar.setText("Keluar");
+        btnkeluar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnkeluarActionPerformed(evt);
+            }
+        });
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel9.setText("DATA KARYAWAN");
@@ -551,6 +560,11 @@ public class karyawan extends javax.swing.JFrame {
     }
         
     }//GEN-LAST:event_tblKarMouseClicked
+
+    private void btnkeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnkeluarActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_btnkeluarActionPerformed
 
     /**
      * @param args the command line arguments
