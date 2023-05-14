@@ -110,7 +110,7 @@ private DefaultTableModel tabmode;
         jScrollPane2 = new javax.swing.JScrollPane();
         areacatatan = new javax.swing.JTextArea();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Barang");
 
         jLabel1.setText("ID");

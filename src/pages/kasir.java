@@ -49,7 +49,7 @@ public class kasir extends javax.swing.JFrame {
         btnkeluar = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Kasir");
 
         jLabel1.setText("ID Barang");

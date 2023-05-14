@@ -52,7 +52,7 @@ public class barang extends javax.swing.JFrame {
         btnkeluar = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Barang");
 
         jLabel1.setText("ID Barang");
@@ -200,12 +200,9 @@ public class barang extends javax.swing.JFrame {
                                                     .addComponent(jLabel2)
                                                     .addGroup(layout.createSequentialGroup()
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                            .addGroup(layout.createSequentialGroup()
-                                                                .addComponent(jLabel1)
-                                                                .addGap(78, 78, 78))
-                                                            .addGroup(layout.createSequentialGroup()
-                                                                .addComponent(txtidbarang, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addGap(18, 18, 18)))
+                                                            .addComponent(jLabel1)
+                                                            .addComponent(txtidbarang, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addGap(18, 18, 18)
                                                         .addComponent(jLabel3)))
                                                 .addGap(18, 18, 18)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
