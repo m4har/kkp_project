@@ -6,7 +6,6 @@
 package krb;
 
 import javax.swing.JFrame;
-import pages.barangreturn;
 import pages.login;
 
 /**
@@ -22,10 +21,7 @@ public class Krb {
         // TODO code application logic here
         JFrame loginPage = new login();
         System.out.println("Render login page");
-        //loginPage.setVisible(true);
-        loginPage.setVisible(true);
-        new barangreturn().setVisible(true);
-        
+        loginPage.setVisible(true); 
         
     }
     
