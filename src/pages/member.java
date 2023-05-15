@@ -5,17 +5,130 @@
  */
 package pages;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.table.DefaultTableModel;
+import utils.koneksi;
 /**
  *
  * @author mahar
  */
 public class member extends javax.swing.JFrame {
-
+    Connection con;
+    Statement st;
+    ResultSet rs;
+    String sql;
     /**
      * Creates new form vendor
      */
     public member() {
         initComponents();
+        txtClear();
+    }
+    
+    void setupDB(){
+         // db
+        koneksi DB = new koneksi();
+        DB.config();
+        con = DB.con;
+        st = DB.stm;
+    }
+    
+    void txtClear(){
+        txtnama.setText("");
+        areaalamat.setText("");
+        txtnohp.setText("");
+        btnubah.setEnabled(false);
+        btntambah.setEnabled(true);
+        generateIdMember();
+        getDataTable();
+    }
+    
+    void generateIdMember(){
+        setupDB();
+        String query = "select COUNT(*) from member";
+        Number count;
+        try {
+            st = con.createStatement();
+            rs = st.executeQuery(query);
+            while(rs.next()){
+                count = Integer.parseInt(rs.getString(1))+1;
+                txtid.setText("m"+count);
+            }
+            rs.close();
+        } catch (Exception e) {
+            System.out.println("generate id"+e);
+        }
+    }
+    
+    public void getDataTable(){
+        setupDB();
+        String searchItem = txtcari.getText();
+        String query = "select id,nama,alamat,noHp,isDeleted from member where id like '%"+searchItem+"%' or nama like '%"+searchItem+"%' order by id asc";
+        Object[] baris = {"ID","Nama","Alamat","No HP"};
+        DefaultTableModel tabmode = new DefaultTableModel(null, baris);
+        try {
+            st = con.createStatement();
+            rs = st.executeQuery(query);
+            while(rs.next()){
+                if(!rs.getBoolean(5)){
+                    tabmode.addRow(new Object[]{
+                        rs.getString(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                    });
+                }
+            
+            }
+            rs.close();
+            tbmember.setModel(tabmode);
+        } catch (Exception e) {
+            System.out.println("tabel member : "+e);
+        }
+    }
+    
+    void createMember(){
+        setupDB();
+        String id = txtid.getText();
+        String nama = txtnama.getText();
+        String noHp = txtnohp.getText();
+        String alamat = areaalamat.getText();
+ 
+        String query = "INSERT INTO `member` (`id`, `nama`, `alamat`, `noHp`, `isDeleted`) VALUES('"+id+"','"+nama+"','"+alamat+"','"+noHp+"','"+0+"')";
+        System.out.println(query);
+        try {
+            st = con.createStatement();
+            st.executeUpdate(query);
+            generateIdMember();
+            getDataTable();
+            st.close();
+            txtClear();
+        } catch (Exception e) {
+            System.out.println("create member"+e);
+        }
+    }
+    
+    void editMember(){
+        setupDB();
+        String id = txtid.getText();
+        String nama = txtnama.getText();
+        String noHp = txtnohp.getText();
+        String alamat = areaalamat.getText();
+ 
+        String query = "UPDATE `member` SET `nama` = '"+nama+"', `alamat` = '"+alamat+"', `noHp` = '"+noHp+"' WHERE `member`.`id` = '"+id+"'";
+        System.out.println(query);
+        try {
+            st = con.createStatement();
+            st.executeUpdate(query);
+            generateIdMember();
+            getDataTable();
+            st.close();
+            txtClear();
+        } catch (Exception e) {
+            System.out.println("edit member"+e);
+        }
     }
 
     /**
@@ -29,11 +142,8 @@ public class member extends javax.swing.JFrame {
 
         jLabel5 = new javax.swing.JLabel();
         txtnohp = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        txtemail = new javax.swing.JTextField();
         btntambah = new javax.swing.JButton();
         btnubah = new javax.swing.JButton();
-        btnhapus = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         txtid = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -44,7 +154,7 @@ public class member extends javax.swing.JFrame {
         btnbatal = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbmember = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
         txtcari = new javax.swing.JTextField();
         btncari = new javax.swing.JButton();
@@ -62,14 +172,6 @@ public class member extends javax.swing.JFrame {
             }
         });
 
-        jLabel6.setText("Email Member");
-
-        txtemail.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtemailActionPerformed(evt);
-            }
-        });
-
         btntambah.setText("Tambah");
         btntambah.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -84,15 +186,9 @@ public class member extends javax.swing.JFrame {
             }
         });
 
-        btnhapus.setText("Hapus");
-        btnhapus.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnhapusActionPerformed(evt);
-            }
-        });
-
         jLabel1.setText("ID Member");
 
+        txtid.setEditable(false);
         txtid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtidActionPerformed(evt);
@@ -122,7 +218,7 @@ public class member extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("List Vendor"));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbmember.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -133,7 +229,12 @@ public class member extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable1);
+        tbmember.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbmemberMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tbmember);
 
         jLabel8.setText("Cari Member");
 
@@ -212,16 +313,12 @@ public class member extends javax.swing.JFrame {
                                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(10, 10, 10)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtemail, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtnohp, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btntambah)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnubah)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnhapus)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnbatal))
                             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -242,7 +339,7 @@ public class member extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -257,10 +354,6 @@ public class member extends javax.swing.JFrame {
                                 .addComponent(txtnama, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtemail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtnohp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -268,7 +361,6 @@ public class member extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btntambah)
                     .addComponent(btnubah)
-                    .addComponent(btnhapus)
                     .addComponent(btnbatal))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -280,27 +372,22 @@ public class member extends javax.swing.JFrame {
         jPanel1.getAccessibleContext().setAccessibleName("List Member");
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtnohpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtnohpActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtnohpActionPerformed
 
-    private void txtemailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtemailActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtemailActionPerformed
-
     private void btntambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntambahActionPerformed
         // TODO add your handling code here:
+        createMember();
     }//GEN-LAST:event_btntambahActionPerformed
 
     private void btnubahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnubahActionPerformed
         // TODO add your handling code here:
+        editMember();
     }//GEN-LAST:event_btnubahActionPerformed
-
-    private void btnhapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnhapusActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnhapusActionPerformed
 
     private void txtidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtidActionPerformed
         // TODO add your handling code here:
@@ -312,6 +399,7 @@ public class member extends javax.swing.JFrame {
 
     private void btnbatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbatalActionPerformed
         // TODO add your handling code here:
+        txtClear();
     }//GEN-LAST:event_btnbatalActionPerformed
 
     private void txtcariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcariActionPerformed
@@ -320,11 +408,24 @@ public class member extends javax.swing.JFrame {
 
     private void btncariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncariActionPerformed
         // TODO add your handling code here:
+        getDataTable();
     }//GEN-LAST:event_btncariActionPerformed
 
     private void btnkeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnkeluarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnkeluarActionPerformed
+
+    private void tbmemberMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbmemberMouseClicked
+        // TODO add your handling code here:
+        int bar = tbmember.getSelectedRow();
+        txtid.setText(tbmember.getValueAt(bar, 0).toString());
+        txtnama.setText(tbmember.getValueAt(bar, 1).toString());
+        areaalamat.setText(tbmember.getValueAt(bar, 2).toString());
+        txtnohp.setText(tbmember.getValueAt(bar, 3).toString());
+        
+        btntambah.setEnabled(false);
+        btnubah.setEnabled(true);
+    }//GEN-LAST:event_tbmemberMouseClicked
 
     /**
      * @param args the command line arguments
@@ -366,7 +467,6 @@ public class member extends javax.swing.JFrame {
     private javax.swing.JTextArea areaalamat;
     private javax.swing.JButton btnbatal;
     private javax.swing.JButton btncari;
-    private javax.swing.JButton btnhapus;
     private javax.swing.JButton btnkeluar;
     private javax.swing.JButton btntambah;
     private javax.swing.JButton btnubah;
@@ -375,14 +475,12 @@ public class member extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tbmember;
     private javax.swing.JTextField txtcari;
-    private javax.swing.JTextField txtemail;
     private javax.swing.JTextField txtid;
     private javax.swing.JTextField txtnama;
     private javax.swing.JTextField txtnohp;
