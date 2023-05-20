@@ -16,6 +16,10 @@ import java.text.NumberFormat;
 import java.util.Locale;
 import javax.swing.table.TableColumn;
 import java.time.*;
+import java.util.HashMap;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -25,7 +29,9 @@ public class kasir extends javax.swing.JFrame {
     Connection con;
     Statement st;
     ResultSet rs;
-    int total;
+    int totalBeli;
+    DefaultTableModel tabMode;
+    String idkasir;
 
     /**
      * Creates new form kasir
@@ -33,6 +39,43 @@ public class kasir extends javax.swing.JFrame {
     public kasir() {
         initComponents();
         generateIdOrder();
+        initTab();
+    }
+    
+     void initTab(){
+        Object[] baris = {"ID Barang","Nama Barang","Jumlah","Harga","Total"};
+        tabMode = new DefaultTableModel(null, baris);
+        tborder.setModel(tabMode);
+        hitungTotal();
+    }
+     
+    void cetak(String idOrder){
+        try {
+            setupDB();
+            String path = "report/kasir.jasper";
+            HashMap parameter =  new HashMap();
+            parameter.put("ID_ORDER",idOrder);
+            JasperPrint print = JasperFillManager.fillReport(path, parameter,con);
+            JasperViewer.viewReport(print,false);
+        } catch (Exception e) {
+            System.out.println("cetak "+e);
+        }
+    
+    }
+    public void setKasir(String id){
+        setupDB();
+        idkasir = id;
+        String query = "select nama from karyawan where id = '"+id+"'";
+         try {
+            st = con.createStatement();
+            rs = st.executeQuery(query);
+            while(rs.next()){
+                nmkasir.setText(rs.getString(1));
+            }
+            rs.close();
+        } catch (Exception e) {
+            System.out.println("get nama kasir "+e);
+        }
     }
     
     public String convertRupiah(int intPrice) {
@@ -72,20 +115,23 @@ public class kasir extends javax.swing.JFrame {
         txtnamabarang.setText("");
         txtqty.setText("");
         txtharga.setText("");
+        txtbayar.setText("");
         txtidbarang.setEditable(true);
     }
-    
-    void incTotal(int value){
-        total = total+value;
-        lbtotal.setText(convertRupiah(total+value)); 
+
+    void hitungTotal(){
+        int total = 0;
+        for(int i = 0; i<tborder.getRowCount();i++){
+            int totalPerRow = Integer.valueOf(tborder.getValueAt(i, 4).toString());
+            total += totalPerRow;
+        }
+        totalBeli = total;
+        lbtotal.setText(convertRupiah(total));
     }
-    void decTotal(int value){
-        total = total-value;
-        lbtotal.setText(convertRupiah(total-value)); 
-    }
+
     void newOrder(){
         setupDB();
-        String query = "INSERT INTO `transaksi` (`id`, `tanggal`, `total`, `idMember`, `idKaryawan`) VALUES ('"+txtidorder.getText()+"', '"+Instant.now().toString()+"', '"+total+"', '"+txtidmember.getText()+"', 'k1');";
+        String query = "INSERT INTO `transaksi` (`id`, `tanggal`, `total`, `idMember`, `idKaryawan`) VALUES ('"+txtidorder.getText()+"', '"+Instant.now().toString()+"', '"+totalBeli+"', '"+txtidmember.getText()+"', '"+idkasir+"');";
           try {
             st = con.createStatement();
             st.executeUpdate(query);
@@ -122,7 +168,6 @@ public class kasir extends javax.swing.JFrame {
         txtbayar = new javax.swing.JTextField();
         btnbayar = new javax.swing.JButton();
         btntambah = new javax.swing.JButton();
-        btnedit = new javax.swing.JButton();
         btnhapus = new javax.swing.JButton();
         btnkeluar = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
@@ -132,6 +177,8 @@ public class kasir extends javax.swing.JFrame {
         txtnamamember = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         txtidorder = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        nmkasir = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Kasir");
@@ -263,8 +310,6 @@ public class kasir extends javax.swing.JFrame {
             }
         });
 
-        btnedit.setText("Edit");
-
         btnhapus.setText("Hapus");
 
         btnkeluar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -304,6 +349,10 @@ public class kasir extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setText("Nama Kasir");
+
+        nmkasir.setText("nama_kasir");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -337,8 +386,6 @@ public class kasir extends javax.swing.JFrame {
                                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(18, 18, 18)
                                         .addComponent(btntambah)
-                                        .addGap(8, 8, 8)
-                                        .addComponent(btnedit, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(btnhapus))
                                     .addGroup(layout.createSequentialGroup()
@@ -348,7 +395,13 @@ public class kasir extends javax.swing.JFrame {
                                         .addGap(29, 29, 29)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(txtidorder, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(nmkasir)
+                                                .addGap(0, 0, 0))
+                                            .addComponent(jLabel6)))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(162, 162, 162)
                                 .addComponent(jLabel8)))))
@@ -363,38 +416,37 @@ public class kasir extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(btnedit, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnhapus, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel9)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtidmember, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtidbarang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jLabel9)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel2)
+                                .addComponent(txtidmember, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtnamabarang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtidbarang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtnamabarang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnkeluar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btntambah, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btntambah, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnhapus, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel4)
-                                    .addComponent(jLabel11))
+                                    .addComponent(jLabel11)
+                                    .addComponent(jLabel6))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(txtqty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtidorder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtidorder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(nmkasir))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel10)
@@ -502,45 +554,76 @@ public class kasir extends javax.swing.JFrame {
 
     private void btntambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntambahActionPerformed
         // TODO add your handling code here:
-        Object[] baris = {"ID Barang","Nama Barang","Jumlah","Harga","Total"};
         int qty = Integer.valueOf(txtqty.getText());
         int harga = Integer.valueOf(txtharga.getText());
         int total = qty * harga;
-        DefaultTableModel tabmode = new DefaultTableModel(null, baris);
-        tabmode.addRow(new Object[]{
+        tabMode.addRow(new Object[]{
                         txtidbarang.getText(),
                         txtnamabarang.getText(),
                         txtqty.getText(),
                         txtharga.getText(),
                         total
                     });
-        tborder.setModel(tabmode);
-        incTotal(total);
-        newOrder();
+        tborder.setModel(tabMode);
+        hitungTotal();
+        txtClear();
     }//GEN-LAST:event_btntambahActionPerformed
 
     private void btnbayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbayarActionPerformed
         // TODO add your handling code here:
-         TableColumn[] orderList = new TableColumn[tborder.getColumnCount()];
-         for (int c = 0; c < tborder.getRowCount(); c++) {
-             String id,nama,jumlah,harga,tot;
-             for (int d = 0; d < tborder.getColumnCount(); d++) {
-                 String value = tborder.getModel().getValueAt(c, d).toString();
-                 System.out.println(value);
-             }
-             
-             newOrder();
-            setupDB();
-            String query = "INSERT INTO `detailtransaksi` (`idTransaksi`, `idBarang`, `hargaJual`, `jumlah`) VALUES ('"+txtidorder.getText()+"', '"+txtidbarang.getText()+"', '"+txtharga.getText()+"', '"+txtqty.getText()+"');";
+        try {
+            int bayar = Integer.valueOf(txtbayar.getText());
+            String idOrder = txtidorder.getText();
+        if(bayar<totalBeli){
+            JOptionPane.showMessageDialog(null, "Uang Kurang", "error", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            newOrder();
+for(int i = 0; i<tborder.getRowCount();i++){
+            String idBarang = tborder.getValueAt(i, 0).toString();
+            int jumlah = Integer.valueOf(tborder.getValueAt(i, 2).toString());
+            int hargaJual = Integer.valueOf(tborder.getValueAt(i,3).toString());
             try {
+             setupDB();
+             String query = "INSERT INTO `detailtransaksi` (`idTransaksi`, `idBarang`, `hargaJual`, `jumlah`) VALUES ('"+idOrder+"', '"+idBarang+"', '"+hargaJual+"', '"+jumlah+"');";
+            
               st = con.createStatement();
               st.executeUpdate(query);
               st.close();
-              txtClear();
           } catch (Exception e) {
               System.out.println("create detailtransaksi"+e);
           }
+            
         }
+            cetak(idOrder);
+            initTab();
+            txtClear();
+            txtidmember.setEditable(true);
+            txtidmember.setText("");
+            txtnamamember.setText("");
+        }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Input Pembayaran Tidak Sesuai", "error", JOptionPane.INFORMATION_MESSAGE);
+        }
+//         TableColumn[] orderList = new TableColumn[tborder.getColumnCount()];
+//         for (int c = 0; c < tborder.getRowCount(); c++) {
+//             String id,nama,jumlah,harga,tot;
+//             for (int d = 0; d < tborder.getColumnCount(); d++) {
+//                 String value = tborder.getModel().getValueAt(c, d).toString();
+//                 System.out.println(value);
+//             }
+//             
+//             newOrder();
+//            setupDB();
+//            String query = "INSERT INTO `detailtransaksi` (`idTransaksi`, `idBarang`, `hargaJual`, `jumlah`) VALUES ('"+txtidorder.getText()+"', '"+txtidbarang.getText()+"', '"+txtharga.getText()+"', '"+txtqty.getText()+"');";
+//            try {
+//              st = con.createStatement();
+//              st.executeUpdate(query);
+//              st.close();
+//              txtClear();
+//          } catch (Exception e) {
+//              System.out.println("create detailtransaksi"+e);
+//          }
+//        }
     }//GEN-LAST:event_btnbayarActionPerformed
 
     /**
@@ -580,7 +663,6 @@ public class kasir extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnbayar;
-    private javax.swing.JButton btnedit;
     private javax.swing.JButton btnhapus;
     private javax.swing.JButton btnkeluar;
     private javax.swing.JButton btntambah;
@@ -591,12 +673,14 @@ public class kasir extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbtotal;
+    private javax.swing.JLabel nmkasir;
     private javax.swing.JTable tborder;
     private javax.swing.JTextField txtbayar;
     private javax.swing.JTextField txtharga;
