@@ -47,16 +47,16 @@ public class karyawan extends javax.swing.JFrame {
             txtnohp.setEditable(true);
             txtpasswd.setEditable(true);
         } else {
-            btntambah.setEnabled(false);
-            btnubah.setEnabled(false);
-            btnhapus.setEnabled(false);
-            btnbatal.setEnabled(false);
-            txtnama.setEditable(false);
-            areaalamat.setEditable(false);
-            cbposisi.setEditable(false);
-            txtemail.setEditable(false);
-            txtnohp.setEditable(false);
-            txtpasswd.setEditable(false);
+            btntambah.setEnabled(true);
+            btnubah.setEnabled(true);
+            btnhapus.setEnabled(true);
+            btnbatal.setEnabled(true);
+            txtnama.setEditable(true);
+            areaalamat.setEditable(true);
+            cbposisi.setEditable(true);
+            txtemail.setEditable(true);
+            txtnohp.setEditable(true);
+            txtpasswd.setEditable(true);
         }
             
     }

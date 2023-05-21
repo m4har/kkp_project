@@ -162,7 +162,7 @@ public class member extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Vendor");
+        setTitle("Member");
 
         jLabel5.setText("NO Hp");
 
