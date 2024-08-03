@@ -31,6 +31,9 @@ public class home extends javax.swing.JFrame {
      */
     public home() {
         initComponents();
+        handleCountVendor();
+        handleCountMember();
+        handleCountBarang();
 //        krblogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/image/logo2.png")));
         // krblogo.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource("/res/image.png")).getImage().getScaledInstance(200, 50, Image.SCALE_DEFAULT)));
     }
@@ -41,6 +44,48 @@ public class home extends javax.swing.JFrame {
         con = DB.con;
         stat = DB.stm;
     }   
+    
+    void handleCountVendor(){
+        sql = "select count(id) as total from vendor";
+        setupDB();
+        try {
+            rs = stat.executeQuery(sql);
+            if(rs.next()){
+                lblCountVendor.setText(rs.getString("total"));
+            }
+            con.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    void handleCountMember(){
+        sql = "select count(id) as total from member";
+        setupDB();
+        try {
+            rs = stat.executeQuery(sql);
+            if(rs.next()){
+                lblCountMember.setText(rs.getString("total"));
+            }
+            con.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+        void handleCountBarang(){
+        sql = "select count(id) as total from barang";
+        setupDB();
+        try {
+            rs = stat.executeQuery(sql);
+            if(rs.next()){
+                lblCountSku.setText(rs.getString("total"));
+            }
+            con.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
     
     public void onLoad(String id){
        idKar = id;

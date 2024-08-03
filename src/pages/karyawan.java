@@ -20,7 +20,7 @@ public class karyawan extends javax.swing.JFrame {
     Statement st;
     ResultSet rs;
     String sql,selectRole;
-    String loginRole = "admin";
+    String loginRole = "";
     /**
      * Creates new form karyawan
      */
@@ -541,17 +541,19 @@ public class karyawan extends javax.swing.JFrame {
         txtid.setText(tblKar.getValueAt(bar, 0).toString());
         txtnama.setText(tblKar.getValueAt(bar, 1).toString());
         
-        if(tblKar.getValueAt(bar, 2).toString() == "admin"){
+        if(tblKar.getValueAt(bar, 2).toString().equals("staff")){
            cbposisi.setSelectedIndex(0);
-        } else if(tblKar.getValueAt(bar, 2).toString() == "staff") {
+        } else if(tblKar.getValueAt(bar, 2).toString().equals("admin")) {
             cbposisi.setSelectedIndex(1);
         }
         areaalamat.setText(tblKar.getValueAt(bar, 3).toString());
         txtnohp.setText(tblKar.getValueAt(bar, 4).toString());
-        txtemail.setText(tblKar.getValueAt(bar, 4).toString());
+        txtemail.setText(tblKar.getValueAt(bar, 5).toString());
 
-       
-        if(loginRole == "admin"){
+        System.out.println(loginRole.equals("admin"));
+        System.out.println(loginRole);
+        if(loginRole.equals("admin")){
+            System.out.println("masuk if");
             txtpasswd.setEditable(false);
             btntambah.setEnabled(false);
             btnubah.setEnabled(true);
