@@ -17,6 +17,7 @@ public class koneksi {
             stm = con.createStatement();
             }
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             JOptionPane.showMessageDialog(null, "koneksi gagal "+e.getMessage());
         }
     }
