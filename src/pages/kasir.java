@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import utils.koneksi;
+import utils.conn;
 import java.text.NumberFormat;
 import java.util.Locale;
 import javax.swing.table.TableColumn;
@@ -20,13 +20,15 @@ import java.util.HashMap;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
+import java.sql.Timestamp;
+import java.sql.PreparedStatement;
 
 /**
  *
  * @author mahar
  */
 public class kasir extends javax.swing.JFrame {
-    Connection con;
+    Connection con = conn.getConnection();
     Statement st;
     ResultSet rs;
     int totalBeli;
@@ -51,7 +53,6 @@ public class kasir extends javax.swing.JFrame {
      
     void cetak(String idOrder){
         try {
-            setupDB();
             String path = "report/kasir.jasper";
             HashMap parameter =  new HashMap();
             parameter.put("ID_ORDER",idOrder);
@@ -63,7 +64,6 @@ public class kasir extends javax.swing.JFrame {
     
     }
     public void setKasir(String id){
-        setupDB();
         idkasir = id;
         String query = "select nama from karyawan where id = '"+id+"'";
          try {
@@ -84,17 +84,10 @@ public class kasir extends javax.swing.JFrame {
         String strFormat = formatter.format(intPrice);
         return strFormat;
     }
-    
-    void setupDB(){
-         // db
-        koneksi DB = new koneksi();
-        DB.config();
-        con = DB.con;
-        st = DB.stm;
-    }
+   
     
     void generateIdOrder(){
-        setupDB();
+
         String query = "select COUNT(*) from transaksi";
         Number count;
         try {
@@ -130,13 +123,25 @@ public class kasir extends javax.swing.JFrame {
     }
 
     void newOrder(){
-        setupDB();
-        String query = "INSERT INTO `transaksi` (`id`, `tanggal`, `total`, `idMember`, `idKaryawan`) VALUES ('"+txtidorder.getText()+"', '"+Instant.now().toString()+"', '"+totalBeli+"', '"+txtidmember.getText()+"', '"+idkasir+"');";
+          Timestamp timestamp = new Timestamp(System.currentTimeMillis()); // Current timestamp
+        String insertQuery = "INSERT INTO transaksi (id, tanggal, total, idMember, idKaryawan) VALUES (?, ?, ?, ?, ?)";
+        
           try {
-            st = con.createStatement();
-            st.executeUpdate(query);
+             // Prepare the statement
+            PreparedStatement statement = con.prepareStatement(insertQuery);
+            // Set the parameters
+            statement.setString(1, txtidorder.getText());
+            statement.setTimestamp(2, timestamp);
+            statement.setInt(3, totalBeli);
+            statement.setString(4, txtidmember.getText());
+            statement.setString(5, idkasir);
+            
+            // Execute the query
+            int rowsInserted = statement.executeUpdate();
+            System.out.println("Rows inserted: " + rowsInserted);
+     
             generateIdOrder();
-            st.close();
+            conn.closeConnection();
         } catch (Exception e) {
             System.out.println("create pelanggan"+e);
         }
@@ -498,7 +503,6 @@ public class kasir extends javax.swing.JFrame {
     private void txtidbarangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtidbarangKeyPressed
         // TODO add your handling code here:
         if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-            setupDB();
             String searchItem = txtidbarang.getText();
             String query = "SELECT nama,hargaJual FROM barang where id = '"+searchItem+"' LIMIT 1";
             try {
@@ -527,7 +531,6 @@ public class kasir extends javax.swing.JFrame {
     private void txtidmemberKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtidmemberKeyPressed
         // TODO add your handling code here:
         if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-             setupDB();
             String searchItem = txtidmember.getText();
             String query = "SELECT nama FROM member where id = '"+searchItem+"' LIMIT 1";
             try {
@@ -578,28 +581,46 @@ public class kasir extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Uang Kurang", "error", JOptionPane.INFORMATION_MESSAGE);
         } else {
             newOrder();
-for(int i = 0; i<tborder.getRowCount();i++){
-            String idBarang = tborder.getValueAt(i, 0).toString();
-            int jumlah = Integer.valueOf(tborder.getValueAt(i, 2).toString());
-            int hargaJual = Integer.valueOf(tborder.getValueAt(i,3).toString());
-            try {
-             setupDB();
-             String query = "INSERT INTO `detailtransaksi` (`idTransaksi`, `idBarang`, `hargaJual`, `jumlah`) VALUES ('"+idOrder+"', '"+idBarang+"', '"+hargaJual+"', '"+jumlah+"');";
+            con = conn.getConnection();
+            for(int i = 0; i<tborder.getRowCount();i++){
+                String idBarang = tborder.getValueAt(i, 0).toString();
+                int jumlah = Integer.valueOf(tborder.getValueAt(i, 2).toString());
+                int hargaJual = Integer.valueOf(tborder.getValueAt(i,3).toString());
+                String queryInsertDetailTransaksi = "INSERT INTO detailtransaksi (idTransaksi, idBarang, hargaJual,jumlah) VALUES (?, ?, ?, ?)";
+                String queryUpdateStok = "UPDATE barang SET stok = stok - ? WHERE id = ?";
+                try {
+                    con.setAutoCommit(false);
+                    
+                     // insert detail
+                     PreparedStatement insertStatementDetailTransaksi = con.prepareStatement(queryInsertDetailTransaksi);
+                     insertStatementDetailTransaksi.setString(1, idOrder);
+                     insertStatementDetailTransaksi.setString(2, idBarang);
+                     insertStatementDetailTransaksi.setInt(3, hargaJual);
+                     insertStatementDetailTransaksi.setInt(4, jumlah);
+                     insertStatementDetailTransaksi.executeUpdate();
+                     // update stok
+                     PreparedStatement updateStatement = con.prepareStatement(queryUpdateStok);
+                     updateStatement.setInt(1,jumlah);
+                     updateStatement.setString(2, idBarang);
+                     updateStatement.executeUpdate();
+                    // Commit transaction
+                     con.commit();
+                     System.out.println("Transaction committed successfully.");
+
+                    
+                 } catch (Exception e) {
+                     System.out.println("create detailtransaksi"+e);
+                 }
             
-              st = con.createStatement();
-              st.executeUpdate(query);
-              st.close();
-          } catch (Exception e) {
-              System.out.println("create detailtransaksi"+e);
-          }
-            
-        }
+            }
             cetak(idOrder);
             initTab();
             txtClear();
             txtidmember.setEditable(true);
             txtidmember.setText("");
             txtnamamember.setText("");
+            // Close the connection
+            conn.closeConnection();
         }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Input Pembayaran Tidak Sesuai", "error", JOptionPane.INFORMATION_MESSAGE);
