@@ -14,21 +14,22 @@ import javax.swing.table.DefaultTableModel;
 import utils.conn;
 import java.text.NumberFormat;
 import java.util.Locale;
-import javax.swing.table.TableColumn;
-import java.time.*;
 import java.util.HashMap;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 import java.sql.Timestamp;
 import java.sql.PreparedStatement;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperReport;
+import utils.koneksi;
 
 /**
  *
  * @author mahar
  */
 public class kasir extends javax.swing.JFrame {
-    Connection con = conn.getConnection();
+    Connection con;
     Statement st;
     ResultSet rs;
     int totalBeli;
@@ -51,12 +52,22 @@ public class kasir extends javax.swing.JFrame {
         hitungTotal();
     }
      
+    void setupDB(){
+         // db
+        koneksi DB = new koneksi();
+        DB.config();
+        con = DB.con;
+        st = DB.stm;
+    }
+     
     void cetak(String idOrder){
         try {
-            String path = "report/kasir.jasper";
+            setupDB();
+            String path = "src/report/kasir.jrxml";
             HashMap parameter =  new HashMap();
             parameter.put("ID_ORDER",idOrder);
-            JasperPrint print = JasperFillManager.fillReport(path, parameter,con);
+            JasperReport jasperReport = JasperCompileManager.compileReport(path);
+            JasperPrint print = JasperFillManager.fillReport(jasperReport, parameter,con);
             JasperViewer.viewReport(print,false);
         } catch (Exception e) {
             System.out.println("cetak "+e);
@@ -66,6 +77,7 @@ public class kasir extends javax.swing.JFrame {
     public void setKasir(String id){
         idkasir = id;
         String query = "select nama from karyawan where id = '"+id+"'";
+        setupDB();
          try {
             st = con.createStatement();
             rs = st.executeQuery(query);
@@ -91,6 +103,7 @@ public class kasir extends javax.swing.JFrame {
         String query = "select COUNT(*) from transaksi";
         Number count;
         try {
+            setupDB();
             st = con.createStatement();
             rs = st.executeQuery(query);
             while(rs.next()){
@@ -123,11 +136,12 @@ public class kasir extends javax.swing.JFrame {
     }
 
     void newOrder(){
-          Timestamp timestamp = new Timestamp(System.currentTimeMillis()); // Current timestamp
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis()); // Current timestamp
         String insertQuery = "INSERT INTO transaksi (id, tanggal, total, idMember, idKaryawan) VALUES (?, ?, ?, ?, ?)";
         
           try {
-             // Prepare the statement
+            setupDB();
+            // Prepare the statement
             PreparedStatement statement = con.prepareStatement(insertQuery);
             // Set the parameters
             statement.setString(1, txtidorder.getText());
@@ -319,6 +333,11 @@ public class kasir extends javax.swing.JFrame {
 
         btnkeluar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btnkeluar.setText("Keluar");
+        btnkeluar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnkeluarActionPerformed(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setText("PEMBAYARAN");
@@ -403,9 +422,7 @@ public class kasir extends javax.swing.JFrame {
                                             .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(nmkasir)
-                                                .addGap(0, 0, 0))
+                                            .addComponent(nmkasir)
                                             .addComponent(jLabel6)))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(162, 162, 162)
@@ -581,7 +598,7 @@ public class kasir extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Uang Kurang", "error", JOptionPane.INFORMATION_MESSAGE);
         } else {
             newOrder();
-            con = conn.getConnection();
+            setupDB();
             for(int i = 0; i<tborder.getRowCount();i++){
                 String idBarang = tborder.getValueAt(i, 0).toString();
                 int jumlah = Integer.valueOf(tborder.getValueAt(i, 2).toString());
@@ -646,6 +663,11 @@ public class kasir extends javax.swing.JFrame {
 //          }
 //        }
     }//GEN-LAST:event_btnbayarActionPerformed
+
+    private void btnkeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnkeluarActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+    }//GEN-LAST:event_btnkeluarActionPerformed
 
     /**
      * @param args the command line arguments

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b8c30f15-7924-4b7b-8fe6-6a7e38add2f4">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
@@ -40,7 +41,7 @@
 			<band height="37">
 				<frame>
 					<reportElement mode="Opaque" x="0" y="7" width="555" height="24" forecolor="#B89F7D" backcolor="#000000" uuid="2feeb838-7695-40a4-9b5d-68e7cddfc170"/>
-					<textField isStretchWithOverflow="true">
+					<textField textAdjust="StretchHeight">
 						<reportElement style="SubTitle" isPrintRepeatedValues="false" x="2" y="0" width="479" height="24" forecolor="#FFFFFF" uuid="0c42dc82-8349-4eee-95a0-0b7837e4c288"/>
 						<textElement>
 							<font isBold="false"/>
@@ -61,7 +62,7 @@
 		<band height="119" splitType="Stretch">
 			<image>
 				<reportElement x="9" y="10" width="102" height="81" uuid="8bd0eda0-d351-483e-bf83-f74f8875d5c8"/>
-				<imageExpression><![CDATA["C:\\Users\\mahar\\Documents\\project\\kuliah\\kkp_project\\src\\assets\\image\\logo.png"]]></imageExpression>
+				<imageExpression><![CDATA["src/assets/image/logo.png"]]></imageExpression>
 			</image>
 			<frame>
 				<reportElement mode="Opaque" x="112" y="80" width="443" height="32" forecolor="#000000" backcolor="#CC0000" uuid="1a08f4ea-2add-4833-877b-71b31d5003dd"/>
@@ -96,35 +97,35 @@
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
-				<text><![CDATA[role]]></text>
+				<text><![CDATA[Role]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="Column header" x="111" y="7" width="111" height="18" forecolor="#000000" uuid="4f23924b-4a65-45d3-a627-e4c7fe488e38"/>
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
-				<text><![CDATA[nama]]></text>
+				<text><![CDATA[Nama]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="Column header" x="222" y="7" width="111" height="18" forecolor="#000000" uuid="fbc098c4-cccd-4fca-aa95-e334e4e14afd"/>
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
-				<text><![CDATA[alamat]]></text>
+				<text><![CDATA[Alamat]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="Column header" x="333" y="7" width="111" height="18" forecolor="#000000" uuid="0d356443-8dab-4200-aab9-3ca747e89663"/>
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
-				<text><![CDATA[noHp]]></text>
+				<text><![CDATA[Hp]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="Column header" x="444" y="7" width="111" height="18" forecolor="#000000" uuid="849d1709-9c28-4af7-9f0d-84335855d98e"/>
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
-				<text><![CDATA[email]]></text>
+				<text><![CDATA[Email]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -132,35 +133,35 @@
 		<band height="18" splitType="Stretch">
 			<frame>
 				<reportElement style="Row" mode="Opaque" x="0" y="0" width="555" height="18" uuid="9462e4b0-7f5d-4d05-820c-5adbad5be025"/>
-				<textField isStretchWithOverflow="true">
+				<textField textAdjust="StretchHeight">
 					<reportElement style="Detail" positionType="Float" x="0" y="0" width="111" height="18" uuid="b90ac508-4f0e-40eb-b03d-48c23e77ad2a"/>
 					<textElement>
 						<font size="14"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{role}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true">
+				<textField textAdjust="StretchHeight">
 					<reportElement style="Detail" positionType="Float" x="111" y="0" width="111" height="18" uuid="29821ac0-8426-4d0d-b1f2-c8857f90603f"/>
 					<textElement>
 						<font size="14"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true">
+				<textField textAdjust="StretchHeight">
 					<reportElement style="Detail" positionType="Float" x="222" y="0" width="111" height="18" uuid="4c637c3b-8d1b-4bb6-b417-2084b7efd931"/>
 					<textElement>
 						<font size="14"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{alamat}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true">
+				<textField textAdjust="StretchHeight">
 					<reportElement style="Detail" positionType="Float" x="333" y="0" width="111" height="18" uuid="8d5b3c68-335d-48e3-860f-299842516579"/>
 					<textElement>
 						<font size="14"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{noHp}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true">
+				<textField textAdjust="StretchHeight">
 					<reportElement style="Detail" positionType="Float" x="444" y="0" width="111" height="18" uuid="4eedcf24-17cd-41ef-b7b4-7c3ea0db4eff"/>
 					<textElement>
 						<font size="14"/>

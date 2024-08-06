@@ -7,8 +7,18 @@ package pages;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 import utils.koneksi;
 
 /**
@@ -105,6 +115,17 @@ public class home extends javax.swing.JFrame {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             JOptionPane.showMessageDialog(null, "error "+e.getMessage());
+        }
+    }
+    
+    private void showReport(String sourceFile) {
+        try {
+            setupDB();
+            JasperReport jasperReport = JasperCompileManager.compileReport(sourceFile);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,null, this.con);
+            JasperViewer.viewReport(jasperPrint, false);
+        } catch (JRException e) {
+            e.printStackTrace();
         }
     }
 
@@ -602,6 +623,11 @@ public class home extends javax.swing.JFrame {
         jMenu3.setText("Report");
 
         jMenuItem6.setText("Penjualan");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem6);
 
         jMenuItem7.setText("Penerimaan Barang");
@@ -616,9 +642,19 @@ public class home extends javax.swing.JFrame {
         jMenu3.add(jMenuItem8);
 
         jMenuItem12.setText("Vendor");
+        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem12ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem12);
 
         jMenuItem13.setText("Barang");
+        jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem13ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem13);
 
         jMenuItem14.setText("Karyawan");
@@ -681,6 +717,7 @@ public class home extends javax.swing.JFrame {
 
     private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
         // TODO add your handling code here:
+        this.showReport("src/report/karyawan.jrxml");
     }//GEN-LAST:event_jMenuItem14ActionPerformed
 
     private void jPanel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseClicked
@@ -703,6 +740,21 @@ public class home extends javax.swing.JFrame {
         karyawanPage.onLoad(roleKar.getText());
         karyawanPage.setVisible(true);
     }//GEN-LAST:event_jPanel6MouseClicked
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        // TODO add your handling code here:
+        this.showReport("src/report/kasir.jrxml");
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
+        // TODO add your handling code here:
+        this.showReport("src/report/barang.jrxml");
+    }//GEN-LAST:event_jMenuItem13ActionPerformed
+
+    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
+        // TODO add your handling code here:
+        this.showReport("src/report/vendor.jrxml");
+    }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     /**
      * @param args the command line arguments

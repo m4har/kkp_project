@@ -398,6 +398,7 @@ public class penerimaanbarang extends javax.swing.JFrame {
 
     private void btnkeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnkeluarActionPerformed
         // TODO add your handling code here:
+        this.setVisible(false);
     }//GEN-LAST:event_btnkeluarActionPerformed
 
     private void txtnamabarangItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_txtnamabarangItemStateChanged

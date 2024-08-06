@@ -471,6 +471,7 @@ public class barang extends javax.swing.JFrame {
 
     private void btnkeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnkeluarActionPerformed
         // TODO add your handling code here:
+        this.setVisible(false);
     }//GEN-LAST:event_btnkeluarActionPerformed
 
     private void txtnamavendorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtnamavendorActionPerformed

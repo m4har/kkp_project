@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="11316090-0d41-42b1-a89c-f09d88693886">
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
@@ -38,7 +39,7 @@ from barang inner join vendor where barang.idVendor = vendor.id]]>
 			<band height="27">
 				<frame>
 					<reportElement mode="Opaque" x="0" y="3" width="721" height="24" forecolor="#B89F7D" backcolor="#000000" uuid="ed57c852-fbd7-497d-b815-b5cb5faa0ed2"/>
-					<textField isStretchWithOverflow="true">
+					<textField textAdjust="StretchHeight">
 						<reportElement style="SubTitle" x="2" y="0" width="695" height="24" forecolor="#FFFFFF" uuid="c3c9d310-1f6f-4b43-a3d1-0e4dfea42f4e"/>
 						<textElement>
 							<font isBold="false"/>
@@ -65,7 +66,7 @@ from barang inner join vendor where barang.idVendor = vendor.id]]>
 		<band height="102" splitType="Stretch">
 			<image>
 				<reportElement x="725" y="0" width="77" height="102" uuid="daafc0c6-7def-4467-babf-7adc217789af"/>
-				<imageExpression><![CDATA["cherry.jpg"]]></imageExpression>
+				<imageExpression><![CDATA["src/assets/image/logo.png"]]></imageExpression>
 			</image>
 			<frame>
 				<reportElement mode="Opaque" x="0" y="0" width="721" height="66" backcolor="#000000" uuid="723a09e8-88e4-4af3-812e-3726f1be1acc"/>
@@ -75,14 +76,14 @@ from barang inner join vendor where barang.idVendor = vendor.id]]>
 					<textElement verticalAlignment="Bottom">
 						<font isBold="false"/>
 					</textElement>
-					<text><![CDATA[Cherry Title]]></text>
+					<text><![CDATA[Report]]></text>
 				</staticText>
 				<staticText>
 					<reportElement style="SubTitle" x="370" y="37" width="316" height="29" uuid="93c49ca1-2cc7-4fdd-8781-6640f70343cd"/>
 					<textElement textAlignment="Right">
 						<font size="22" isBold="false"/>
 					</textElement>
-					<text><![CDATA[Cherry SubTitle]]></text>
+					<text><![CDATA[Data Barang]]></text>
 				</staticText>
 			</frame>
 			<frame>
@@ -107,35 +108,35 @@ from barang inner join vendor where barang.idVendor = vendor.id]]>
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
-				<text><![CDATA[namaBarang]]></text>
+				<text><![CDATA[Nama Barang]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="Column header" x="159" y="0" width="159" height="18" forecolor="#000000" uuid="8e927f37-b54e-455f-b44a-b7e3e352fca9"/>
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
-				<text><![CDATA[stok]]></text>
+				<text><![CDATA[Stok]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="Column header" x="318" y="0" width="159" height="18" forecolor="#000000" uuid="45d7e714-41da-4656-978d-aa4f27a7d021"/>
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
-				<text><![CDATA[hargaJual]]></text>
+				<text><![CDATA[Harga Jual]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="Column header" x="477" y="0" width="159" height="18" forecolor="#000000" uuid="a4528a81-bf70-4261-bb28-901619c96d8b"/>
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
-				<text><![CDATA[kategori]]></text>
+				<text><![CDATA[Kategori]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="Column header" x="636" y="0" width="159" height="18" forecolor="#000000" uuid="d57aabcf-d08a-42e0-a4b2-1426836f213c"/>
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
-				<text><![CDATA[namaVendor]]></text>
+				<text><![CDATA[Nama Vendor]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -143,35 +144,35 @@ from barang inner join vendor where barang.idVendor = vendor.id]]>
 		<band height="18" splitType="Stretch">
 			<frame>
 				<reportElement style="Row" mode="Opaque" x="0" y="0" width="797" height="18" uuid="63d8d9c2-6461-4638-b044-ca7054baa1e2"/>
-				<textField isStretchWithOverflow="true">
+				<textField textAdjust="StretchHeight">
 					<reportElement style="Detail" positionType="Float" x="0" y="0" width="159" height="18" uuid="bf266200-e3da-41ac-882c-cf308fbe5dda"/>
 					<textElement>
 						<font size="14"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{namaBarang}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true">
+				<textField textAdjust="StretchHeight">
 					<reportElement style="Detail" positionType="Float" x="159" y="0" width="159" height="18" uuid="9756d2b6-66b0-4a9a-99ec-67c30acfac2c"/>
 					<textElement>
 						<font size="14"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{stok}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true">
+				<textField textAdjust="StretchHeight">
 					<reportElement style="Detail" positionType="Float" x="318" y="0" width="159" height="18" uuid="f61fe5fb-a807-4de6-aea9-3058e98ccb7a"/>
 					<textElement>
 						<font size="14"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{hargaJual}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true">
+				<textField textAdjust="StretchHeight">
 					<reportElement style="Detail" positionType="Float" x="477" y="0" width="159" height="18" uuid="e2429e0c-a6d1-40f4-869c-929a53927547"/>
 					<textElement>
 						<font size="14"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{kategori}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true">
+				<textField textAdjust="StretchHeight">
 					<reportElement style="Detail" positionType="Float" x="636" y="0" width="159" height="18" uuid="3cca1333-816c-4775-a895-d6ff98caabd2"/>
 					<textElement>
 						<font size="14"/>

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="901e9c51-9679-44b2-a42a-e6c33b34c13b">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
@@ -16,7 +17,7 @@
 	<parameter name="ID_ORDER" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
-	<queryString>
+	<queryString language="SQL">
 		<![CDATA[select transaksi.id as id, transaksi.total as total, barang.nama as namaBarang, detailtransaksi.jumlah as jumlahOrder ,detailtransaksi.hargaJual as hargaBarang,karyawan.nama as namaKaryawan, transaksi.tanggal as tanggalPesan, transaksi.total as total from transaksi inner join detailtransaksi,karyawan,barang where transaksi.id = detailtransaksi.idTransaksi and transaksi.idKaryawan = karyawan.id and detailtransaksi.idBarang = barang.id and transaksi.id = $P{ID_ORDER};]]>
 	</queryString>
 	<field name="id" class="java.lang.String">
@@ -36,7 +37,7 @@
 			<band height="37">
 				<frame>
 					<reportElement mode="Opaque" x="0" y="7" width="555" height="24" forecolor="#B89F7D" backcolor="#000000" uuid="1b3d1cfd-63f2-45f8-a350-b2bd6e2388fc"/>
-					<textField isStretchWithOverflow="true">
+					<textField textAdjust="StretchHeight">
 						<reportElement style="SubTitle" isPrintRepeatedValues="false" x="2" y="0" width="479" height="24" forecolor="#FFFFFF" uuid="9536a599-2d17-4dc3-9faa-6b1729bda324"/>
 						<textElement>
 							<font isBold="false"/>
@@ -54,7 +55,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="114" splitType="Stretch">
+		<band height="109" splitType="Stretch">
 			<frame>
 				<reportElement mode="Opaque" x="110" y="77" width="443" height="32" forecolor="#000000" backcolor="#CC0000" uuid="5067d5eb-5b8a-4839-a40e-1918944d3a24"/>
 				<textField pattern="EEEEE dd MMMMM yyyy">
@@ -78,7 +79,7 @@
 			</frame>
 			<image>
 				<reportElement x="7" y="7" width="102" height="81" uuid="5399b4ef-bf3a-46e9-bf14-453ca9ba4d38"/>
-				<imageExpression><![CDATA["C:\\Users\\mahar\\Documents\\project\\kuliah\\kkp_project\\src\\assets\\image\\logo.png"]]></imageExpression>
+				<imageExpression><![CDATA["src/assets/image/logo.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>
@@ -92,21 +93,21 @@
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
-				<text><![CDATA[namaBarang]]></text>
+				<text><![CDATA[Nama Barang]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="Column header" x="209" y="7" width="92" height="18" forecolor="#000000" uuid="285afdb8-7cd1-4021-a986-2ac4649c511a"/>
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
-				<text><![CDATA[jumlahOrder]]></text>
+				<text><![CDATA[Jumlah Order]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="Column header" x="315" y="7" width="92" height="18" forecolor="#000000" uuid="6eb32055-0e1b-48bf-85bd-08d9c64b88e8"/>
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
-				<text><![CDATA[hargaBarang]]></text>
+				<text><![CDATA[Harga Barang]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -114,21 +115,21 @@
 		<band height="18" splitType="Stretch">
 			<frame>
 				<reportElement style="Row" mode="Opaque" x="0" y="0" width="555" height="18" uuid="20399f84-29d5-4220-9aef-8061fdbb4c9f"/>
-				<textField isStretchWithOverflow="true">
+				<textField textAdjust="StretchHeight">
 					<reportElement style="Detail" positionType="Float" x="92" y="0" width="92" height="18" uuid="b88f969f-dc64-46e7-ad37-3ae9b3cc8745"/>
 					<textElement>
 						<font size="14"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{namaBarang}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true">
+				<textField textAdjust="StretchHeight">
 					<reportElement style="Detail" positionType="Float" x="199" y="0" width="92" height="18" uuid="30be3ed2-fcbc-43d8-8585-cab965507e39"/>
 					<textElement textAlignment="Center">
 						<font size="14"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{jumlahOrder}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true">
+				<textField textAdjust="StretchHeight">
 					<reportElement style="Detail" positionType="Float" x="315" y="0" width="92" height="18" uuid="046ddbfd-dc65-40fc-ba3b-431871497690"/>
 					<textElement textAlignment="Center">
 						<font size="14"/>
@@ -146,7 +147,7 @@
 					<pen lineWidth="0.5" lineColor="#999999"/>
 				</graphicElement>
 			</line>
-			<textField isStretchWithOverflow="true">
+			<textField textAdjust="StretchHeight">
 				<reportElement style="Detail" positionType="Float" x="92" y="4" width="92" height="18" uuid="a1d6fcc8-d9a9-4a66-ba17-56b27898febf"/>
 				<textElement>
 					<font size="14"/>
@@ -160,7 +161,7 @@
 				</textElement>
 				<text><![CDATA[total]]></text>
 			</staticText>
-			<textField isStretchWithOverflow="true">
+			<textField textAdjust="StretchHeight">
 				<reportElement style="Detail" positionType="Float" x="459" y="4" width="92" height="18" uuid="d0f4ab55-1887-40d6-a3f3-0edd095a93e6"/>
 				<textElement>
 					<font size="14"/>
@@ -174,7 +175,7 @@
 				</textElement>
 				<text><![CDATA[Kasir]]></text>
 			</staticText>
-			<textField isStretchWithOverflow="true">
+			<textField textAdjust="StretchHeight">
 				<reportElement style="Detail" positionType="Float" x="459" y="22" width="92" height="18" uuid="c8660aea-3286-436a-b413-826e1219ed4e"/>
 				<textElement>
 					<font size="14"/>
