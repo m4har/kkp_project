@@ -9,6 +9,9 @@ import utils.koneksi;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JOptionPane;
 
 import javax.swing.table.DefaultTableModel;
@@ -78,7 +81,7 @@ public class penerimaanbarang extends javax.swing.JFrame {
             while (rs.next()) {
                 Object[] data = {
                     rs.getString("id"),
-                    rs.getString("tanggal"),
+                    this.convertDate(rs.getLong("tanggal")),
                     rs.getString("jumlah"),
                     rs.getString("hargaBeli"),
                     rs.getString("idBarang"),
@@ -88,6 +91,25 @@ public class penerimaanbarang extends javax.swing.JFrame {
             rs.close();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    
+    private String convertDate(long timestamp) {
+        Date date = new Date(timestamp); 
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); 
+        return formatter.format(date); 
+    }
+    
+    void deleteDataPenerimaan(){
+        String id = txtidterimabarang.getText();
+        String query = "DELETE FROM penerimaanbarang WHERE id = '"+id+"'";
+        try {
+            st = con.createStatement();
+            st.executeUpdate(query);
+            tampilData("");
+            st.close();
+        } catch (Exception e) {
+            System.out.println("gagal delete "+e);
         }
     }
 
@@ -193,6 +215,11 @@ public class penerimaanbarang extends javax.swing.JFrame {
                 "ID", "Nama", "Kategori", "Stock", "Vendor", "Harga Beli", "Harga Jual"
             }
         ));
+        tbl1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbl1);
 
         jLabel8.setText("Cari Barang");
@@ -211,6 +238,11 @@ public class penerimaanbarang extends javax.swing.JFrame {
         });
 
         btnhapus.setText("Hapus");
+        btnhapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnhapusActionPerformed(evt);
+            }
+        });
 
         btnkeluar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btnkeluar.setText("Keluar");
@@ -223,7 +255,11 @@ public class penerimaanbarang extends javax.swing.JFrame {
         jLabel9.setText("ID Vendor");
 
         txtidvendor.setEditable(false);
-        txtidvendor.setText("1");
+        txtidvendor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtidvendorActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setText("PENERIMAAN BARANG");
@@ -254,33 +290,36 @@ public class penerimaanbarang extends javax.swing.JFrame {
                             .addComponent(jLabel7))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addGap(62, 62, 62))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(txtnamabarang, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGap(18, 18, 18)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(txtstock, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtidvendor, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel9))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtbeli, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel6)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jLabel3)
-                                .addGap(46, 46, 46)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnbatal, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnhapus, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btntambah, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGap(46, 255, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel2)
+                                                .addGap(62, 62, 62))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(txtnamabarang, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addGap(18, 18, 18)))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel5)
+                                            .addComponent(txtstock, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtidvendor, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel9))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtbeli, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel6))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btntambah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnbatal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnhapus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(40, 40, 40)))))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
@@ -319,7 +358,6 @@ public class penerimaanbarang extends javax.swing.JFrame {
                             .addComponent(txtidvendor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtbeli, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(32, 32, 32)
@@ -366,13 +404,15 @@ public class penerimaanbarang extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             setupDB();
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis()); // Current timestamp
             st = con.createStatement();
-            st.executeUpdate("INSERT INTO penerimaanbarang (id, jumlah, hargaBeli, idBarang,idVendor) VALUES('"
+            st.executeUpdate("INSERT INTO penerimaanbarang (id, tanggal,jumlah, hargaBeli, idBarang,idVendor) VALUES('"
                     + txtidterimabarang.getText() + "','"
+                    + timestamp + "','"
                     + txtstock.getText() + "','"
                     + txtbeli.getText() + "','"
                     + txtidbarang.getText() + "','"
-                    + 1 + "')");
+                    + txtidvendor.getText() + "')");
             tampilData("");
             JOptionPane.showMessageDialog(null, "Simpan Berhasil");
             reset_form();
@@ -384,6 +424,7 @@ public class penerimaanbarang extends javax.swing.JFrame {
 
     private void btnbatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbatalActionPerformed
         // TODO add your handling code here:
+        reset_form();
     }//GEN-LAST:event_btnbatalActionPerformed
 
     private void txtcariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcariActionPerformed
@@ -412,6 +453,7 @@ public class penerimaanbarang extends javax.swing.JFrame {
             
             while (rs.next()) {
                 txtidbarang.setText(rs.getString("id"));
+                txtidvendor.setText(rs.getString("idVendor"));
             }
             rs.close();
         } catch (Exception e) {
@@ -419,6 +461,21 @@ public class penerimaanbarang extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_txtnamabarangItemStateChanged
+
+    private void txtidvendorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtidvendorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtidvendorActionPerformed
+
+    private void btnhapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnhapusActionPerformed
+        // TODO add your handling code here:
+        deleteDataPenerimaan();
+    }//GEN-LAST:event_btnhapusActionPerformed
+
+    private void tbl1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl1MouseClicked
+        // TODO add your handling code here:
+        int bar = tbl1.getSelectedRow();
+        txtidterimabarang.setText(tbl1.getValueAt(bar, 0).toString());
+    }//GEN-LAST:event_tbl1MouseClicked
 
     /**
      * @param args the command line arguments
