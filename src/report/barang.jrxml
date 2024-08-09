@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="11316090-0d41-42b1-a89c-f09d88693886">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -39,7 +41,7 @@ from barang inner join vendor where barang.idVendor = vendor.id]]>
 			<band height="27">
 				<frame>
 					<reportElement mode="Opaque" x="0" y="3" width="721" height="24" forecolor="#B89F7D" backcolor="#000000" uuid="ed57c852-fbd7-497d-b815-b5cb5faa0ed2"/>
-					<textField textAdjust="StretchHeight">
+					<textField>
 						<reportElement style="SubTitle" x="2" y="0" width="695" height="24" forecolor="#FFFFFF" uuid="c3c9d310-1f6f-4b43-a3d1-0e4dfea42f4e"/>
 						<textElement>
 							<font isBold="false"/>
@@ -56,7 +58,7 @@ from barang inner join vendor where barang.idVendor = vendor.id]]>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="6"/>
+			<band height="3"/>
 		</groupFooter>
 	</group>
 	<background>
@@ -64,38 +66,24 @@ from barang inner join vendor where barang.idVendor = vendor.id]]>
 	</background>
 	<title>
 		<band height="102" splitType="Stretch">
-			<image>
-				<reportElement x="725" y="0" width="77" height="102" uuid="daafc0c6-7def-4467-babf-7adc217789af"/>
-				<imageExpression><![CDATA["src/assets/image/logo.png"]]></imageExpression>
-			</image>
 			<frame>
-				<reportElement mode="Opaque" x="0" y="0" width="721" height="66" backcolor="#000000" uuid="723a09e8-88e4-4af3-812e-3726f1be1acc"/>
+				<reportElement mode="Opaque" x="112" y="0" width="690" height="66" backcolor="#000000" uuid="c55344c1-db62-4dbe-a88f-0429cf6dd082"/>
 				<staticText>
-					<reportElement style="Title" x="0" y="0" width="370" height="66" uuid="e02073e9-6c45-451f-8d55-865e575dabba"/>
+					<reportElement style="Title" x="239" y="0" width="370" height="66" uuid="59fa2038-aef8-431b-9199-3079cec7888b"/>
 					<box topPadding="4" leftPadding="4" bottomPadding="4" rightPadding="4"/>
 					<textElement verticalAlignment="Bottom">
 						<font isBold="false"/>
 					</textElement>
-					<text><![CDATA[Report]]></text>
-				</staticText>
-				<staticText>
-					<reportElement style="SubTitle" x="370" y="37" width="316" height="29" uuid="93c49ca1-2cc7-4fdd-8781-6640f70343cd"/>
-					<textElement textAlignment="Right">
-						<font size="22" isBold="false"/>
-					</textElement>
-					<text><![CDATA[Data Barang]]></text>
+					<text><![CDATA[Stok Barang]]></text>
 				</staticText>
 			</frame>
 			<frame>
-				<reportElement mode="Opaque" x="0" y="70" width="721" height="32" forecolor="#000000" backcolor="#CC0000" uuid="eaadaa26-fa68-48b1-88fb-b16618f8d39d"/>
-				<textField pattern="EEEEE dd MMMMM yyyy">
-					<reportElement x="553" y="12" width="144" height="20" forecolor="#FFFFFF" uuid="9b8261fd-6922-4555-9d33-635165a6919e"/>
-					<textElement textAlignment="Right">
-						<font size="12"/>
-					</textElement>
-					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-				</textField>
+				<reportElement mode="Opaque" x="112" y="70" width="690" height="32" forecolor="#000000" backcolor="#CC0000" uuid="ef876f8d-b333-4874-ad60-bf16d5e77582"/>
 			</frame>
+			<image>
+				<reportElement x="7" y="20" width="105" height="81" uuid="fb3f1fdb-af80-4497-bafa-86a32971c3fb"/>
+				<imageExpression><![CDATA["C:\\Users\\mahar\\Documents\\project\\kuliah\\kkp_project\\src\\assets\\image\\logo.png"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>
@@ -144,35 +132,35 @@ from barang inner join vendor where barang.idVendor = vendor.id]]>
 		<band height="18" splitType="Stretch">
 			<frame>
 				<reportElement style="Row" mode="Opaque" x="0" y="0" width="797" height="18" uuid="63d8d9c2-6461-4638-b044-ca7054baa1e2"/>
-				<textField textAdjust="StretchHeight">
+				<textField>
 					<reportElement style="Detail" positionType="Float" x="0" y="0" width="159" height="18" uuid="bf266200-e3da-41ac-882c-cf308fbe5dda"/>
 					<textElement>
 						<font size="14"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{namaBarang}]]></textFieldExpression>
 				</textField>
-				<textField textAdjust="StretchHeight">
+				<textField>
 					<reportElement style="Detail" positionType="Float" x="159" y="0" width="159" height="18" uuid="9756d2b6-66b0-4a9a-99ec-67c30acfac2c"/>
 					<textElement>
 						<font size="14"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{stok}]]></textFieldExpression>
 				</textField>
-				<textField textAdjust="StretchHeight">
+				<textField>
 					<reportElement style="Detail" positionType="Float" x="318" y="0" width="159" height="18" uuid="f61fe5fb-a807-4de6-aea9-3058e98ccb7a"/>
 					<textElement>
 						<font size="14"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{hargaJual}]]></textFieldExpression>
 				</textField>
-				<textField textAdjust="StretchHeight">
+				<textField>
 					<reportElement style="Detail" positionType="Float" x="477" y="0" width="159" height="18" uuid="e2429e0c-a6d1-40f4-869c-929a53927547"/>
 					<textElement>
 						<font size="14"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{kategori}]]></textFieldExpression>
 				</textField>
-				<textField textAdjust="StretchHeight">
+				<textField>
 					<reportElement style="Detail" positionType="Float" x="636" y="0" width="159" height="18" uuid="3cca1333-816c-4775-a895-d6ff98caabd2"/>
 					<textElement>
 						<font size="14"/>
@@ -183,13 +171,41 @@ from barang inner join vendor where barang.idVendor = vendor.id]]>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="7" splitType="Stretch">
+		<band height="129" splitType="Stretch">
 			<line>
 				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="b1f7b519-4f55-464c-be01-2503ad11771a"/>
 				<graphicElement>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 				</graphicElement>
 			</line>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="658" y="4" width="137" height="20" forecolor="#000000" uuid="c871b17b-728d-4d37-b4b9-541875977b12"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="621" y="4" width="37" height="20" uuid="e3be1e98-cb40-4eba-b167-0aea952275ef"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Bogor,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="672" y="73" width="111" height="20" uuid="0c3abcc8-626c-4a05-9c1c-411d8e1e35ec"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Muhammad Hafidz]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="672" y="93" width="130" height="20" uuid="c0498443-618d-4506-b8de-87e3c4323a4e"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Manajer Operasional]]></text>
+			</staticText>
 		</band>
 	</columnFooter>
 	<pageFooter>
@@ -197,25 +213,18 @@ from barang inner join vendor where barang.idVendor = vendor.id]]>
 			<frame>
 				<reportElement mode="Opaque" x="0" y="0" width="802" height="25" forecolor="#D0B48E" backcolor="#000000" uuid="2e8bccce-063a-459e-bb1b-01dd97e30d34"/>
 				<textField evaluationTime="Report">
-					<reportElement style="Column header" x="757" y="3" width="40" height="20" forecolor="#FFFFFF" uuid="4edeedae-1b9e-4f24-b7b2-a0929551a091"/>
+					<reportElement style="Column header" x="721" y="3" width="76" height="20" forecolor="#FFFFFF" uuid="4edeedae-1b9e-4f24-b7b2-a0929551a091"/>
 					<textElement verticalAlignment="Middle">
 						<font size="10" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="Column header" x="677" y="3" width="80" height="20" forecolor="#FFFFFF" uuid="386876b5-2c80-440a-b42a-c353369c5286"/>
+					<reportElement style="Column header" x="658" y="3" width="63" height="20" forecolor="#FFFFFF" uuid="386876b5-2c80-440a-b42a-c353369c5286"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="10" isBold="false"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
-				</textField>
-				<textField pattern="EEEEE dd MMMMM yyyy">
-					<reportElement style="Column header" x="2" y="3" width="197" height="20" forecolor="#FFFFFF" uuid="3b8c050f-a17f-4e85-8afe-14661298f1e9"/>
-					<textElement verticalAlignment="Middle">
-						<font size="10" isBold="false"/>
-					</textElement>
-					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Halaman "+$V{PAGE_NUMBER}+" dari"]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>

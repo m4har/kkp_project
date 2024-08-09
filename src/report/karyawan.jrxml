@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b8c30f15-7924-4b7b-8fe6-6a7e38add2f4">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
@@ -41,7 +40,7 @@
 			<band height="37">
 				<frame>
 					<reportElement mode="Opaque" x="0" y="7" width="555" height="24" forecolor="#B89F7D" backcolor="#000000" uuid="2feeb838-7695-40a4-9b5d-68e7cddfc170"/>
-					<textField textAdjust="StretchHeight">
+					<textField>
 						<reportElement style="SubTitle" isPrintRepeatedValues="false" x="2" y="0" width="479" height="24" forecolor="#FFFFFF" uuid="0c42dc82-8349-4eee-95a0-0b7837e4c288"/>
 						<textElement>
 							<font isBold="false"/>
@@ -60,19 +59,8 @@
 	</background>
 	<title>
 		<band height="119" splitType="Stretch">
-			<image>
-				<reportElement x="9" y="10" width="102" height="81" uuid="8bd0eda0-d351-483e-bf83-f74f8875d5c8"/>
-				<imageExpression><![CDATA["src/assets/image/logo.png"]]></imageExpression>
-			</image>
 			<frame>
 				<reportElement mode="Opaque" x="112" y="80" width="443" height="32" forecolor="#000000" backcolor="#CC0000" uuid="1a08f4ea-2add-4833-877b-71b31d5003dd"/>
-				<textField pattern="EEEEE dd MMMMM yyyy">
-					<reportElement x="297" y="11" width="144" height="20" forecolor="#FFFFFF" uuid="d3382751-b41c-497b-981c-c1419d2b50a9"/>
-					<textElement textAlignment="Right">
-						<font size="12"/>
-					</textElement>
-					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-				</textField>
 			</frame>
 			<frame>
 				<reportElement mode="Opaque" x="112" y="10" width="443" height="66" backcolor="#000000" uuid="f9ffec97-9231-423c-97b3-43bdb038aee1"/>
@@ -82,9 +70,13 @@
 					<textElement verticalAlignment="Bottom">
 						<font isBold="false"/>
 					</textElement>
-					<text><![CDATA[Karyawan]]></text>
+					<text><![CDATA[Data Karyawan]]></text>
 				</staticText>
 			</frame>
+			<image>
+				<reportElement x="6" y="30" width="105" height="81" uuid="7421049e-194b-47fa-bc48-f250bd574556"/>
+				<imageExpression><![CDATA["C:\\Users\\mahar\\Documents\\project\\kuliah\\kkp_project\\src\\assets\\image\\logo.png"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>
@@ -133,35 +125,35 @@
 		<band height="18" splitType="Stretch">
 			<frame>
 				<reportElement style="Row" mode="Opaque" x="0" y="0" width="555" height="18" uuid="9462e4b0-7f5d-4d05-820c-5adbad5be025"/>
-				<textField textAdjust="StretchHeight">
+				<textField>
 					<reportElement style="Detail" positionType="Float" x="0" y="0" width="111" height="18" uuid="b90ac508-4f0e-40eb-b03d-48c23e77ad2a"/>
 					<textElement>
 						<font size="14"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{role}]]></textFieldExpression>
 				</textField>
-				<textField textAdjust="StretchHeight">
+				<textField>
 					<reportElement style="Detail" positionType="Float" x="111" y="0" width="111" height="18" uuid="29821ac0-8426-4d0d-b1f2-c8857f90603f"/>
 					<textElement>
 						<font size="14"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
 				</textField>
-				<textField textAdjust="StretchHeight">
+				<textField>
 					<reportElement style="Detail" positionType="Float" x="222" y="0" width="111" height="18" uuid="4c637c3b-8d1b-4bb6-b417-2084b7efd931"/>
 					<textElement>
 						<font size="14"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{alamat}]]></textFieldExpression>
 				</textField>
-				<textField textAdjust="StretchHeight">
+				<textField>
 					<reportElement style="Detail" positionType="Float" x="333" y="0" width="111" height="18" uuid="8d5b3c68-335d-48e3-860f-299842516579"/>
 					<textElement>
 						<font size="14"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{noHp}]]></textFieldExpression>
 				</textField>
-				<textField textAdjust="StretchHeight">
+				<textField>
 					<reportElement style="Detail" positionType="Float" x="444" y="0" width="111" height="18" uuid="4eedcf24-17cd-41ef-b7b4-7c3ea0db4eff"/>
 					<textElement>
 						<font size="14"/>
@@ -172,13 +164,41 @@
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="7" splitType="Stretch">
+		<band height="121" splitType="Stretch">
 			<line>
 				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="8b4a9bf7-57ef-46ff-ae48-ff58031dccd2"/>
 				<graphicElement>
 					<pen lineWidth="0.5" lineColor="#999999"/>
 				</graphicElement>
 			</line>
+			<staticText>
+				<reportElement x="377" y="5" width="37" height="20" uuid="47830a80-92e2-4733-b224-a25400ffa99f"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Bogor,]]></text>
+			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="414" y="5" width="137" height="20" forecolor="#000000" uuid="98445041-c60a-48c9-ad56-0f0eb37cf74e"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="423" y="81" width="111" height="20" uuid="bb955f12-0820-4f18-be18-e5f46902f029"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Muhammad Hafidz]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="423" y="101" width="130" height="20" uuid="8a47d5d2-e652-49d9-930c-d5616d15bfe6"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Manajer Operasional]]></text>
+			</staticText>
 		</band>
 	</columnFooter>
 	<pageFooter>
@@ -186,27 +206,20 @@
 			<frame>
 				<reportElement mode="Opaque" x="0" y="1" width="555" height="24" forecolor="#D0B48E" backcolor="#000000" uuid="2ed00c9e-59ec-4e0c-aca1-a9e1a27fdd3c"/>
 				<textField evaluationTime="Report">
-					<reportElement style="Column header" x="513" y="0" width="40" height="20" forecolor="#FFFFFF" uuid="c5b3bdc8-5846-4a98-a5fb-13b295d3da1e"/>
+					<reportElement style="Column header" x="477" y="0" width="76" height="20" forecolor="#FFFFFF" uuid="45cafab0-4f21-431a-9477-91c5d6d75e6b"/>
 					<textElement verticalAlignment="Middle">
 						<font size="10" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 				</textField>
-				<textField>
-					<reportElement style="Column header" x="433" y="0" width="80" height="20" forecolor="#FFFFFF" uuid="3eef5361-551d-4a50-8dae-cc1d085c4edb"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="10" isBold="false"/>
-					</textElement>
-					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
-				</textField>
-				<textField pattern="EEEEE dd MMMMM yyyy">
-					<reportElement style="Column header" x="2" y="1" width="197" height="20" forecolor="#FFFFFF" uuid="c34cf9df-52e7-47d2-8659-3873e6a35ba4"/>
-					<textElement verticalAlignment="Middle">
-						<font size="10" isBold="false"/>
-					</textElement>
-					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-				</textField>
 			</frame>
+			<textField>
+				<reportElement style="Column header" x="414" y="0" width="63" height="20" forecolor="#FFFFFF" uuid="08486ace-0085-48b5-8911-10de86d3b0e2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Halaman "+$V{PAGE_NUMBER}+" dari"]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 	<summary>
